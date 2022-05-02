@@ -23,18 +23,18 @@
         tools:ignore="RtlSymmetry" />
 
     <SearchView
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
-        android:searchIcon="@drawable/ic_search"
         android:background="@drawable/search_background"
-        android:queryHint="@string/search_your_notes"
-        android:theme="@style/ThemeOverlay.search"
         android:iconifiedByDefault="false"
-        app:layout_constraintTop_toBottomOf="@id/notes_app_title"
-        app:layout_constraintStart_toStartOf="parent"
+        android:queryHint="@string/search_your_notes"
+        android:searchIcon="@drawable/ic_search"
+        android:theme="@style/ThemeOverlay.search"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/search_view"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notes_app_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -46,17 +46,17 @@
         app:layout_constraintTop_toBottomOf="@id/search_view" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabBtnCreateNote"
+        android:id="@+id/create_note_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:backgroundTint="@color/viridian_green"
+        android:contentDescription="@string/add_new_note_button"
         android:src="@drawable/ic_add"
         android:tint="@color/ebony_clay"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/add_new_note_button" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,7 +18,7 @@ class NoteRepository private constructor(context: Context) {
         DATABASE_NAME
     ).build()
 
-    private val noteDao = database.crimeDao()
+    private val noteDao = database.noteDao()
     private val executor = Executors.newSingleThreadExecutor()
 
     fun getNotes(): LiveData<List<Note>> = noteDao.getNotes()

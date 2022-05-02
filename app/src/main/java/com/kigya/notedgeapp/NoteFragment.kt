@@ -1,0 +1,128 @@
+package com.kigya.notedgeapp
+
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.kigya.notedgeapp.databinding.FragmentCreateNoteBinding
+import com.kigya.notedgeapp.viewModel.NoteDetailViewModel
+import java.util.*
+
+private const val ARG_NOTE_ID = "crime_id"
+
+class NoteFragment : Fragment() {
+
+    private var _binding: FragmentCreateNoteBinding? = null
+    private val binding get() = _binding!!
+
+    private val noteDetailViewModel: NoteDetailViewModel by lazy {
+        ViewModelProvider(this).get(NoteDetailViewModel::class.java)
+    }
+
+    private lateinit var note: Note
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        note = Note()
+        val noteId: UUID = arguments?.getSerializable(ARG_NOTE_ID) as UUID
+        noteDetailViewModel.loadNote(noteId)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentCreateNoteBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.noteDatetime.apply {
+            text = note.dateTime.toString()
+        }
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val noteId = arguments?.getSerializable(ARG_NOTE_ID) as UUID
+        noteDetailViewModel.loadNote(noteId)
+        noteDetailViewModel.noteLiveData.observe(
+            viewLifecycleOwner,
+            Observer { note ->
+                note?.let {
+                    this.note = note
+                    updateUI()
+                }
+            })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val titleWatcher = object : TextWatcher {
+            override fun beforeTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) = Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                note.title = s.toString()
+            }
+
+            override fun afterTextChanged(sequence: Editable?) = Unit
+        }
+
+        val noteTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) = Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                note.noteText = s.toString()
+            }
+
+            override fun afterTextChanged(sequence: Editable?) = Unit
+        }
+
+        binding.noteTitle.addTextChangedListener(titleWatcher)
+        binding.noteDescription.addTextChangedListener(noteTextWatcher)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        noteDetailViewModel.daveNote(note)
+    }
+
+    private fun updateUI() {
+        binding.noteTitle.setText(note.title)
+        binding.noteDescription.setText(note.noteText)
+        binding.noteDatetime.text = note.dateTime.toString()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+
+        fun newInstance(noteId: UUID): NoteFragment {
+            val args = Bundle().apply {
+                putSerializable(ARG_NOTE_ID, noteId)
+            }
+            return NoteFragment().apply {
+                arguments = args
+            }
+        }
+    }
+}

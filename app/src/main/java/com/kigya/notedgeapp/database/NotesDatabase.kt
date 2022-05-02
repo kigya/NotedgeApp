@@ -7,13 +7,10 @@ import com.kigya.notedgeapp.Note
 import com.kigya.notedgeapp.converters.NoteTypeConverters
 import com.kigya.notedgeapp.dao.NoteDao
 
-@Database(
-    entities = [Note::class],
-    version = 1
-)
+@Database(entities = [Note::class], version = 1, exportSchema = false)
 @TypeConverters(NoteTypeConverters::class)
 abstract class NotesDatabase : RoomDatabase() {
 
-    abstract fun crimeDao(): NoteDao
+    abstract fun noteDao(): NoteDao
 
 }
