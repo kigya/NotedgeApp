@@ -22,7 +22,7 @@ class NoteDetailViewModel : ViewModel() {
         noteIdLiveData.value = noteId
     }
 
-    fun daveNote(note: Note) {
+    fun saveNote(note: Note) {
         noteRepository.updateNote(note)
     }
 

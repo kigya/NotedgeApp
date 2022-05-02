@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.kigya.notedgeapp.databinding.FragmentCreateNoteBinding
 import com.kigya.notedgeapp.viewModel.NoteDetailViewModel
+import android.text.format.DateFormat
 import java.util.*
 
 private const val ARG_NOTE_ID = "crime_id"
@@ -60,6 +61,11 @@ class NoteFragment : Fragment() {
                     updateUI()
                 }
             })
+
+        binding.imgDone.setOnClickListener {
+            noteDetailViewModel.saveNote(note)
+
+        }
     }
 
     override fun onStart() {
@@ -100,13 +106,14 @@ class NoteFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        noteDetailViewModel.daveNote(note)
+        noteDetailViewModel.saveNote(note)
     }
 
     private fun updateUI() {
-        binding.noteTitle.setText(note.title)
-        binding.noteDescription.setText(note.noteText)
-        binding.noteDatetime.text = note.dateTime.toString()
+        binding.noteTitle.setText(note.title.trim())
+        binding.noteDescription.setText(note.noteText.trim())
+        binding.noteDatetime.text = DateFormat.format("dd/M/yyyy hh:mm:ss", note.dateTime)
+
     }
 
     override fun onDestroyView() {

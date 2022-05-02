@@ -3,6 +3,7 @@
     <style name="ThemeOverlay.search" parent="Theme.NotedgeApp">
         <!-- Text color -->
         <item name="android:editTextColor">@color/alice_blue</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
         <!-- Hint text color -->
         <item name="android:textColorHint">@color/alice_blue_opacity</item>
     </style>

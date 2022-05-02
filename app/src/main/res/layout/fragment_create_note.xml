@@ -11,7 +11,7 @@
         android:id="@+id/imgBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:contentDescription="@string/back_to_home_button"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:contentDescription="@string/save_note_button"
         android:src="@drawable/ic_tick"
@@ -65,7 +65,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:padding="@dimen/_10sdp"
-            android:textColor="@color/alice_blue_opacity"
+            android:textColor="@color/alice_blue"
             android:textColorHint="@color/alice_blue_opacity"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>
@@ -93,7 +93,7 @@
     <EditText
         android:id="@+id/note_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="@dimen/_10sdp"
         android:autofillHints=""
         android:background="@null"
@@ -106,6 +106,8 @@
         android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="left"
         app:layout_constraintTop_toBottomOf="@id/note_datetime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
