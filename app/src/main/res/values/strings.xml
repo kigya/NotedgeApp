@@ -3,4 +3,8 @@
     <string name="notes">Notes</string>
     <string name="search_your_notes">Search Your Notes</string>
     <string name="add_new_note_button">Add new note button</string>
+    <string name="back_to_home_button">Back to home button</string>
+    <string name="save_note_button">Save note button</string>
+    <string name="note_title">Note Title</string>
+    <string name="enter_note_here">Enter Note Here</string>
 </resources>
