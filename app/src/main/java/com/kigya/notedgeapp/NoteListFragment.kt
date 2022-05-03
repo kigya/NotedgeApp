@@ -1,5 +1,6 @@
 package com.kigya.notedgeapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -7,14 +8,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.GAP_HANDLING_NONE
 import com.kigya.notedgeapp.databinding.FragmentHomeBinding
 import com.kigya.notedgeapp.viewModel.NotesListViewModel
 import java.util.*
@@ -51,10 +56,9 @@ class NoteListFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
-        binding.recyclerView.layoutManager = StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL
-        )
+        binding.recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
         binding.recyclerView.adapter = adapter
         return view
     }
@@ -161,6 +165,8 @@ class NoteListFragment : Fragment() {
         override fun getItemCount() = notes.size
 
         override fun onBindViewHolder(holder: NoteHolder, position: Int) {
+//            holder.itemView.animation =
+//                AnimationUtils.loadAnimation(holder.itemView.context, R.anim.main)
             val note = notes[position]
             holder.bind(note)
         }
