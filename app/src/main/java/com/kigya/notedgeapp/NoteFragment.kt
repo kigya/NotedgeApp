@@ -77,11 +77,9 @@ class NoteFragment : Fragment() {
                 count: Int,
                 after: Int
             ) = Unit
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 note.title = s.toString()
             }
-
             override fun afterTextChanged(sequence: Editable?) = Unit
         }
 
@@ -92,11 +90,9 @@ class NoteFragment : Fragment() {
                 count: Int,
                 after: Int
             ) = Unit
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 note.noteText = s.toString()
             }
-
             override fun afterTextChanged(sequence: Editable?) = Unit
         }
 

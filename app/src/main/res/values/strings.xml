@@ -7,4 +7,5 @@
     <string name="save_note_button">Save note button</string>
     <string name="note_title">Note Title</string>
     <string name="enter_note_here">Enter Note Here</string>
+    <string name="delete_note_button">Delete note button</string>
 </resources>

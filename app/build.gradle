@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'androidx.room:room-runtime:2.4.2'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
     kapt 'androidx.room:room-compiler:2.4.2'
     implementation 'androidx.room:room-ktx:2.4.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'

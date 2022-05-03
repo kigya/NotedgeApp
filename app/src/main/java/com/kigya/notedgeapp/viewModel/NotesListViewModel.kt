@@ -3,6 +3,7 @@ package com.kigya.notedgeapp.viewModel
 import androidx.lifecycle.ViewModel
 import com.kigya.notedgeapp.Note
 import com.kigya.notedgeapp.repository.NoteRepository
+import java.util.*
 
 class NotesListViewModel : ViewModel() {
 
@@ -11,6 +12,10 @@ class NotesListViewModel : ViewModel() {
 
     fun addNote(note: Note) {
         noteRepository.addNote(note)
+    }
+
+    fun deleteNote(id: UUID) {
+        noteRepository.deleteNote(id)
     }
 
 }

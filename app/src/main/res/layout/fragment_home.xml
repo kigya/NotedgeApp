@@ -7,20 +7,47 @@
     android:background="@color/ebony_clay"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/notes_app_title"
+    <LinearLayout
+        android:id="@+id/app_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_semibold"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:paddingStart="@dimen/_14sdp"
         android:paddingTop="@dimen/_14sdp"
-        android:text="@string/notes"
-        android:textColor="@color/alice_blue"
-        android:textSize="@dimen/_20ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlSymmetry" />
+        android:paddingEnd="@dimen/_14sdp"
+        tools:ignore="RtlSymmetry"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/notes_app_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/notes"
+            android:textColor="@color/alice_blue"
+            android:textSize="@dimen/_20ssp"
+            tools:ignore="RtlSymmetry" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            android:contentDescription="@string/delete_note_button"
+            android:background="@null"
+            android:visibility="invisible"
+            android:layout_marginBottom="2dp"/>
+
+    </LinearLayout>
+
 
     <SearchView
         android:id="@+id/search_view"
@@ -38,7 +65,7 @@
         android:closeIcon="@drawable/ic_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notes_app_title" />
+        app:layout_constraintTop_toBottomOf="@id/app_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

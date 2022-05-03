@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -36,6 +38,7 @@ class NoteListFragment : Fragment() {
 
     private var callbacks: Callbacks? = null
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as? Callbacks
@@ -48,8 +51,10 @@ class NoteListFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
-        binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2,
-            StaggeredGridLayoutManager.VERTICAL)
+        binding.recyclerView.layoutManager = StaggeredGridLayoutManager(
+            2,
+            StaggeredGridLayoutManager.VERTICAL
+        )
         binding.recyclerView.adapter = adapter
         return view
     }
@@ -97,16 +102,18 @@ class NoteListFragment : Fragment() {
     }
 
     private inner class NoteHolder(view: View) : RecyclerView.ViewHolder(view),
-        View.OnClickListener {
+        View.OnClickListener, View.OnLongClickListener {
 
-        private lateinit var note: Note
+        lateinit var note: Note
 
         private val noteTitleTextView: TextView = itemView.findViewById(R.id.note_item_title)
-        private val noteDescriptionTextView: TextView = itemView.findViewById(R.id.note_item_description)
+        private val noteDescriptionTextView: TextView =
+            itemView.findViewById(R.id.note_item_description)
         private val noteDateTextView: TextView = itemView.findViewById(R.id.note_item_datetime)
 
         init {
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
         }
 
         fun bind(note: Note) {
@@ -118,12 +125,33 @@ class NoteListFragment : Fragment() {
         }
 
         override fun onClick(v: View) {
+
             callbacks?.onNoteSelected(note.id)
+
+        }
+
+        private fun enableCardViewColor(v: View) {
+            itemView.findViewById<CardView>(R.id.cardView).setCardBackgroundColor(
+                ContextCompat.getColor(v.context!!, R.color.viridian_green)
+            )
+        }
+
+        private fun disableCardViewColor(v: View) {
+            itemView.findViewById<CardView>(R.id.cardView).setCardBackgroundColor(
+                ContextCompat.getColor(v.context!!, R.color.bunker)
+            )
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            v?.let { enableCardViewColor(it) }
+            noteListViewModel.deleteNote(note.id)
+            return true
         }
     }
 
     private inner class NoteAdapter(var notes: List<Note>) :
         RecyclerView.Adapter<NoteHolder>() {
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
                 : NoteHolder {
             val view = layoutInflater.inflate(R.layout.note_item, parent, false)
