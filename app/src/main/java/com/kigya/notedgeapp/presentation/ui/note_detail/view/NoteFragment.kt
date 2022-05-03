@@ -1,29 +1,29 @@
-package com.kigya.notedgeapp
+package com.kigya.notedgeapp.presentation.ui.note_detail.view
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.databinding.FragmentCreateNoteBinding
-import com.kigya.notedgeapp.viewModel.NoteDetailViewModel
-import android.text.format.DateFormat
+import com.kigya.notedgeapp.presentation.ui.note_detail.viewmodel.NoteDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 private const val ARG_NOTE_ID = "crime_id"
 
+@AndroidEntryPoint
 class NoteFragment : Fragment() {
 
     private var _binding: FragmentCreateNoteBinding? = null
     private val binding get() = _binding!!
 
-    private val noteDetailViewModel: NoteDetailViewModel by lazy {
-        ViewModelProvider(this).get(NoteDetailViewModel::class.java)
-    }
+    private val noteDetailViewModel by viewModels<NoteDetailViewModel>()
 
     private lateinit var note: Note
 
@@ -54,13 +54,13 @@ class NoteFragment : Fragment() {
         val noteId = arguments?.getSerializable(ARG_NOTE_ID) as UUID
         noteDetailViewModel.loadNote(noteId)
         noteDetailViewModel.noteLiveData.observe(
-            viewLifecycleOwner,
-            Observer { note ->
-                note?.let {
-                    this.note = note
-                    updateUI()
-                }
-            })
+            viewLifecycleOwner
+        ) { note ->
+            note?.let {
+                this.note = note
+                updateUI()
+            }
+        }
 
         binding.imgDone.setOnClickListener {
             noteDetailViewModel.saveNote(note)
@@ -109,7 +109,6 @@ class NoteFragment : Fragment() {
         binding.noteTitle.setText(note.title.trim())
         binding.noteDescription.setText(note.noteText.trim())
         binding.noteDatetime.text = DateFormat.format("dd/M/yyyy hh:mm:ss", note.dateTime)
-
     }
 
     override fun onDestroyView() {

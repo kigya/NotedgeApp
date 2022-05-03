@@ -1,14 +1,16 @@
-package com.kigya.notedgeapp
+package com.kigya.notedgeapp.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.transition.FragmentTransitionSupport
-import com.google.android.material.transition.MaterialFadeThrough
+import com.kigya.notedgeapp.R
+import com.kigya.notedgeapp.presentation.ui.note_detail.view.NoteFragment
+import com.kigya.notedgeapp.presentation.ui.note_list.view.NoteListFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
-class MainActivity : AppCompatActivity(), NoteListFragment.Callbacks {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), Navigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -1,4 +1,4 @@
-package com.kigya.notedgeapp
+package com.kigya.notedgeapp.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

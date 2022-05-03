@@ -36,16 +36,6 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <ImageButton
-            android:id="@+id/delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_delete"
-            android:contentDescription="@string/delete_note_button"
-            android:background="@null"
-            android:visibility="invisible"
-            android:layout_marginBottom="2dp"/>
-
     </LinearLayout>
 
 
@@ -72,10 +62,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_view"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/search_view" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/create_note_button"
