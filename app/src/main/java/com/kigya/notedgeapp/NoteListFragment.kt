@@ -1,28 +1,32 @@
 package com.kigya.notedgeapp
 
-import android.annotation.SuppressLint
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.transition.Slide
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager.GAP_HANDLING_NONE
+import com.google.android.material.transition.MaterialFadeThrough
 import com.kigya.notedgeapp.databinding.FragmentHomeBinding
 import com.kigya.notedgeapp.viewModel.NotesListViewModel
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
 import java.util.*
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 private const val TAG = "NoteListFragment"
 
@@ -49,6 +53,14 @@ class NoteListFragment : Fragment() {
         callbacks = context as? Callbacks
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = MaterialFadeThrough()
+        enterTransition = MaterialFadeThrough()
+        returnTransition = MaterialFadeThrough()
+        reenterTransition = MaterialFadeThrough()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +70,7 @@ class NoteListFragment : Fragment() {
         val view = binding.root
         binding.recyclerView.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
+        binding.recyclerView.itemAnimator = SlideInLeftAnimator(OvershootInterpolator(1f))
         binding.recyclerView.adapter = adapter
         return view
     }
@@ -148,7 +160,17 @@ class NoteListFragment : Fragment() {
 
         override fun onLongClick(v: View?): Boolean {
             v?.let { enableCardViewColor(it) }
-            noteListViewModel.deleteNote(note.id)
+            val animator = ValueAnimator.ofFloat(0f, 1f)
+            animator.duration = 500
+            animator.addUpdateListener { valueAnimator ->
+                val animatedValue = valueAnimator.animatedValue as Float
+                v?.alpha = animatedValue
+            }
+            animator.start()
+            Executors.newSingleThreadScheduledExecutor().schedule({
+                noteListViewModel.deleteNote(note.id)
+            }, 300, TimeUnit.MILLISECONDS)
+
             return true
         }
     }
@@ -165,8 +187,8 @@ class NoteListFragment : Fragment() {
         override fun getItemCount() = notes.size
 
         override fun onBindViewHolder(holder: NoteHolder, position: Int) {
-//            holder.itemView.animation =
-//                AnimationUtils.loadAnimation(holder.itemView.context, R.anim.main)
+            holder.itemView.animation =
+                AnimationUtils.loadAnimation(holder.itemView.context, R.anim.main)
             val note = notes[position]
             holder.bind(note)
         }

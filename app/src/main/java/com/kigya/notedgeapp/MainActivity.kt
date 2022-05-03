@@ -3,6 +3,9 @@ package com.kigya.notedgeapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.transition.FragmentTransitionSupport
+import com.google.android.material.transition.MaterialFadeThrough
 import java.util.*
 
 class MainActivity : AppCompatActivity(), NoteListFragment.Callbacks {
