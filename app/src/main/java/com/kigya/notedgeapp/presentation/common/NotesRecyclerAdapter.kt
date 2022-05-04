@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kigya.notedgeapp.R
 import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.databinding.NoteItemBinding
-import com.kigya.notedgeapp.extensions.findIndexById
+import com.kigya.notedgeapp.utils.extensions.findIndexById
 import com.kigya.notedgeapp.utils.constants.Constants.LIST_DATE_FORMAT
 import java.util.*
 

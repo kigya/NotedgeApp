@@ -1,15 +1,12 @@
 package com.kigya.notedgeapp.di
 
-import android.app.Application
-import androidx.room.Room
-import com.kigya.notedgeapp.data.local.NotesDatabase
-import com.kigya.notedgeapp.data.local.dao.NoteDao
-import com.kigya.notedgeapp.data.repository.NoteRepositoryImpl
-import com.kigya.notedgeapp.domain.repository.NoteRepository
-import com.kigya.notedgeapp.utils.constants.Constants.DATABASE_NAME
+import android.content.Context
+import com.kigya.notedgeapp.data.preferences.NoteAppPreferencesImpl
+import com.kigya.notedgeapp.domain.preferences.NoteAppPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -17,22 +14,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NotedgeAppModule {
 
-    @Provides
     @Singleton
-    fun providesNotedgeBD(application: Application): NotesDatabase {
-        return Room.databaseBuilder(
-            application,
-            NotesDatabase::class.java,
-            DATABASE_NAME
-        ).build()
+    @Provides
+    fun providePreferences(@ApplicationContext context: Context): NoteAppPreferences {
+        return NoteAppPreferencesImpl.getDefaultPreferenceInstance(context)
     }
-
-    @Provides
-    @Singleton
-    fun providesNoteDao(database: NotesDatabase): NoteDao = database.noteDao()
-
-    @Provides
-    @Singleton
-    fun providesRepository(noteDao: NoteDao): NoteRepository = NoteRepositoryImpl(noteDao)
 
 }

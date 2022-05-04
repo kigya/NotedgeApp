@@ -1,4 +1,4 @@
-package com.kigya.notedgeapp.presentation.ui.onboarding
+package com.kigya.notedgeapp.presentation.common
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,13 +6,11 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.kigya.notedgeapp.R
-import com.kigya.notedgeapp.presentation.ui.onboarding.entity.OnBoardingPage
+import com.kigya.notedgeapp.data.model.OnBoardingPage
 import kotlinx.android.synthetic.main.onboarding_page_item.view.*
 
 class OnBoardingPagerAdapter(private val onBoardingPageList:Array<OnBoardingPage> = OnBoardingPage.values())
     : RecyclerView.Adapter<PagerViewHolder>() {
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): PagerViewHolder {
         return LayoutInflater.from(parent.context).inflate(

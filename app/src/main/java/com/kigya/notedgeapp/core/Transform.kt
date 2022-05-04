@@ -1,3 +1,5 @@
+package com.kigya.notedgeapp.core
+
 import android.view.View
 import kotlinx.android.synthetic.main.onboarding_page_item.view.*
 

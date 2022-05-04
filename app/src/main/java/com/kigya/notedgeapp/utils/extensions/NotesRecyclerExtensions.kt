@@ -1,4 +1,4 @@
-package com.kigya.notedgeapp.extensions
+package com.kigya.notedgeapp.utils.extensions
 
 import com.kigya.notedgeapp.data.model.Note
 import java.util.*

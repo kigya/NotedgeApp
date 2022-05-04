@@ -1,4 +1,4 @@
-package com.kigya.notedgeapp.data.local.dao
+package com.kigya.notedgeapp.data.local.room.dao
 
 import androidx.room.*
 import com.kigya.notedgeapp.data.model.Note

@@ -3,9 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-android-extensions'
 }
-
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdk 32
@@ -62,7 +61,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.0'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
-    implementation 'com.airbnb.android:lottie:3.4.0'
+    implementation 'com.airbnb.android:lottie:5.0.3'
+    implementation "androidx.preference:preference-ktx:1.2.0"
     implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
     kapt 'androidx.room:room-compiler:2.4.2'
     kapt "com.google.dagger:hilt-compiler:2.41"

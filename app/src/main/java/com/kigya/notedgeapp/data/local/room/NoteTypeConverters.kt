@@ -1,4 +1,4 @@
-package com.kigya.notedgeapp.data.local
+package com.kigya.notedgeapp.data.local.room
 
 import androidx.room.TypeConverter
 import java.util.*

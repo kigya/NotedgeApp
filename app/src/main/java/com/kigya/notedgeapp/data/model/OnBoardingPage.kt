@@ -1,4 +1,4 @@
-package com.kigya.notedgeapp.presentation.ui.onboarding.entity
+package com.kigya.notedgeapp.data.model
 import androidx.annotation.StringRes
 import com.kigya.notedgeapp.R
 

@@ -1,4 +1,4 @@
-package com.kigya.notedgeapp.presentation.ui.note_list.view
+package com.kigya.notedgeapp.presentation.ui.fragments.note_list.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +12,8 @@ import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.model.observeEvent
 import com.kigya.notedgeapp.databinding.FragmentHomeBinding
 import com.kigya.notedgeapp.presentation.common.NotesRecyclerAdapter
-import com.kigya.notedgeapp.presentation.ui.navigator
 import com.kigya.notedgeapp.presentation.ui.note_list.viewmodel.NotesListViewModel
+import com.kigya.notedgeapp.utils.extensions.navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

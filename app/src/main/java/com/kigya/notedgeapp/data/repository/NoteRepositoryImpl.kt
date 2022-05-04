@@ -1,7 +1,7 @@
 package com.kigya.notedgeapp.data.repository
 
 import com.kigya.notedgeapp.data.model.Note
-import com.kigya.notedgeapp.data.local.dao.NoteDao
+import com.kigya.notedgeapp.data.local.room.dao.NoteDao
 import com.kigya.notedgeapp.domain.repository.NoteRepository
 import java.util.*
 import javax.inject.Inject

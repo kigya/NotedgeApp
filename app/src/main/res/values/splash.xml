@@ -3,7 +3,6 @@
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/ebony_clay</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/notedge_logo</item>
-        <item name="windowSplashScreenAnimationDuration">3000</item>
-        <item name="postSplashScreenTheme">@style/Theme.NotedgeApp.Onboarding</item>
+        <item name="postSplashScreenTheme">@style/Theme.NotedgeApp</item>
     </style>
 </resources>
