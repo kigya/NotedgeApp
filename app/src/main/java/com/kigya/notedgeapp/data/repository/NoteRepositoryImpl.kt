@@ -10,7 +10,6 @@ class NoteRepositoryImpl @Inject constructor(
     private val noteDao: NoteDao
 ) : NoteRepository {
 
-
     override suspend fun getNotes(): List<Note> = noteDao.getNotes()
 
     override suspend fun getNote(id: UUID): Note? = noteDao.getNote(id)

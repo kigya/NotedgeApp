@@ -16,8 +16,6 @@ import com.kigya.notedgeapp.presentation.ui.navigator
 import com.kigya.notedgeapp.presentation.ui.note_list.viewmodel.NotesListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val TAG = "NoteListFragment"
-
 @AndroidEntryPoint
 class NoteListFragment : Fragment() {
 
@@ -30,10 +28,7 @@ class NoteListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exitTransition = MaterialFadeThrough()
-        enterTransition = MaterialFadeThrough()
-        returnTransition = MaterialFadeThrough()
-        reenterTransition = MaterialFadeThrough()
+        setFragmentTransitions()
     }
 
     override fun onCreateView(
@@ -44,7 +39,8 @@ class NoteListFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         adapter = NotesRecyclerAdapter(noteListViewModel)
-        binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.recyclerView.adapter = adapter
 
         return view
@@ -59,14 +55,13 @@ class NoteListFragment : Fragment() {
             val note = Note()
             noteListViewModel.addNote(note)
             navigator().onNoteSelected(note.id)
-
         }
 
         noteListViewModel.noteListLiveData.observeEvent(viewLifecycleOwner) { notes ->
             adapter.notes = notes.toMutableList()
         }
 
-        noteListViewModel.onItemSelected.observeEvent(viewLifecycleOwner){ id ->
+        noteListViewModel.onItemSelected.observeEvent(viewLifecycleOwner) { id ->
             navigator().onNoteSelected(id)
         }
 
@@ -75,6 +70,13 @@ class NoteListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setFragmentTransitions() {
+        exitTransition = MaterialFadeThrough()
+        enterTransition = MaterialFadeThrough()
+        returnTransition = MaterialFadeThrough()
+        reenterTransition = MaterialFadeThrough()
     }
 
     companion object {

@@ -18,7 +18,6 @@ class NoteDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val noteIdLiveData = MutableLiveData<UUID>()
-
     private val _noteLiveData = MutableLiveData<Note?>()
     val noteLiveData: LiveData<Note?> = _noteLiveData
 
@@ -26,8 +25,9 @@ class NoteDetailViewModel @Inject constructor(
         if (noteLiveData.value == null) {
             viewModelScope.launch(Dispatchers.IO) {
                 val id = noteIdLiveData.value
-                if (id != null)
+                if (id != null) {
                     _noteLiveData.postValue(noteRepository.getNote(id))
+                }
             }
         }
     }
@@ -38,6 +38,10 @@ class NoteDetailViewModel @Inject constructor(
 
     fun saveNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
         noteRepository.updateNote(note)
+    }
+
+    fun deleteNote(id: UUID) = viewModelScope.launch(Dispatchers.IO) {
+        noteRepository.deleteNote(id)
     }
 
 }

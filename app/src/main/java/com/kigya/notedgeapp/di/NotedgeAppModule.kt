@@ -35,5 +35,4 @@ object NotedgeAppModule {
     @Singleton
     fun providesRepository(noteDao: NoteDao): NoteRepository = NoteRepositoryImpl(noteDao)
 
-
 }

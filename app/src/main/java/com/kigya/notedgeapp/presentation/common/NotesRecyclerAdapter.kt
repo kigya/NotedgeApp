@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kigya.notedgeapp.R
 import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.databinding.NoteItemBinding
+import com.kigya.notedgeapp.extensions.findIndexById
+import com.kigya.notedgeapp.utils.constants.Constants.LIST_DATE_FORMAT
 import java.util.*
 
 interface NoteActionListener {
@@ -71,16 +73,10 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
 
         fun bind(note: Note) {
             this.note = note
-            noteTitleTextView.text = this.note.title
-            noteDescriptionTextView.text = this.note.noteText
+            noteTitleTextView.text = this.note.title.trim()
+            noteDescriptionTextView.text = this.note.noteText.trim()
             noteDateTextView.text =
-                DateFormat.format("EEEE, MMM dd, yyyy", this.note.dateTime)
-        }
-
-        override fun onClick(v: View) {
-            if (_removing == null || note.id != _removing ){
-                actionListener.onNoteSelected(note.id)
-            }
+                DateFormat.format(LIST_DATE_FORMAT, this.note.dateTime)
         }
 
         private fun enableCardViewColor(v: View) {
@@ -89,24 +85,24 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
             )
         }
 
-        private fun disableCardViewColor(v: View) {
-            itemView.findViewById<CardView>(R.id.cardView).setCardBackgroundColor(
-                ContextCompat.getColor(v.context!!, R.color.bunker)
-            )
+        override fun onClick(v: View) {
+            if (_removing == null || note.id != _removing) {
+                actionListener.onNoteSelected(note.id)
+            }
         }
 
-        private fun List<Note>.findIndexById(id: UUID): Int = this.indexOfFirst { it.id == id }
-
         override fun onLongClick(view: View?): Boolean {
-            view?.let { enableCardViewColor(it) }
-            val animator = ValueAnimator.ofFloat(0f, 1f)
-            animator.duration = 250
-            animator.addUpdateListener { valueAnimator ->
-                val animatedValue = valueAnimator.animatedValue as Float
-                view?.alpha = animatedValue
+            view?.let {
+                enableCardViewColor(it)
             }
+            val animator = animateViewAlpha(view)
+            addAnimatorListener(animator)
+            animator?.start()
+            return true
+        }
 
-            animator.addListener(object :Animator.AnimatorListener{
+        private fun addAnimatorListener(animator: ValueAnimator?) {
+            animator?.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(p0: Animator?) {
                     _removing = note.id
                 }
@@ -120,11 +116,17 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
 
                 override fun onAnimationCancel(p0: Animator?) = Unit
                 override fun onAnimationRepeat(p0: Animator?) = Unit
-
             })
-            animator.start()
+        }
 
-            return true
+        private fun animateViewAlpha(view: View?): ValueAnimator? {
+            val animator = ValueAnimator.ofFloat(0f, 1f)
+            animator.duration = 250
+            animator.addUpdateListener { valueAnimator ->
+                val animatedValue = valueAnimator.animatedValue as Float
+                view?.alpha = animatedValue
+            }
+            return animator
         }
     }
 }

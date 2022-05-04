@@ -21,13 +21,4 @@ class Note : Serializable {
     @ColumnInfo(name = "note_text")
     var noteText: String = ""
 
-    init {
-        id = UUID.randomUUID()
-        title = ""
-        dateTime = Date()
-        noteText = ""
-    }
-    override fun toString(): String {
-        return "$title : $dateTime"
-    }
 }

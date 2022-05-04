@@ -20,7 +20,6 @@ class NotesDiffCallback(
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
-        // method based on java equals
         return oldItem == newItem
     }
 

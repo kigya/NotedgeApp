@@ -46,24 +46,19 @@ class NotesListViewModel @Inject constructor(
 
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-
         when (event) {
             Lifecycle.Event.ON_CREATE -> {
                 if (noteListLiveData.value?.get()?.isEmpty() == true
-                    || noteListLiveData.value == null) {
+                    || noteListLiveData.value == null
+                ) {
                     updateList()
                 }
             }
-
             Lifecycle.Event.ON_RESUME -> {
                 updateList()
             }
-
-
-            else -> {}
+            else -> return
         }
-
     }
-
 
 }
