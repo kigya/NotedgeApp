@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="ThemeOverlay.search" parent="Theme.NotedgeApp">
         <!-- Text color -->
@@ -6,6 +6,36 @@
         <item name="android:textSize">@dimen/_10sdp</item>
         <!-- Hint text color -->
         <item name="android:textColorHint">@color/alice_blue_opacity</item>
+    </style>
+
+    <!-- Theme for OnBoardingActivity (applying some transition) -->
+    <style name="Theme.NotedgeApp.Onboarding">
+        <item name="android:windowSharedElementsUseOverlay">false</item>
+        <item name="android:windowContentTransitions">true</item>
+
+        <item name="android:windowExitTransition">@transition/activity_main_exit</item>
+        <item name="android:windowReenterTransition">@transition/activity_main_reenter</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/light_sea_green</item>
+        <item name="colorSecondaryVariant">@color/viridian_green</item>
+        <item name="colorOnSecondary">@color/alice_blue</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/light_sea_green</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+    <!--Styling TextInputLayout colors-->
+    <style name="EditText.Login" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">@color/bunker</item>
+        <item name="colorControlActivated">@color/bunker</item>
+    </style>
+    <style name="Widget.MaterialComponents.Button.TextButton.OnBoardTextButton"
+        parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/bunker</item>
     </style>
 
 </resources>

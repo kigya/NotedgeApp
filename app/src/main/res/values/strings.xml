@@ -8,4 +8,19 @@
     <string name="note_title">Note Title</string>
     <string name="enter_note_here">Enter Note Here</string>
     <string name="delete_note_button">Delete note button</string>
+
+    <string name="onboarding_slide1_title">Write Simply</string>
+    <string name="onboarding_slide1_desc">Create Brilliantly</string>
+    <string name="onboarding_slide1_subtitle">The perfect solution for anyone who needs simple notes</string>
+
+    <string name="onboarding_slide2_title">Safe Protection</string>
+    <string name="onboarding_slide2_desc">Keep Notes Securely</string>
+    <string name="onboarding_slide2_subtitle">Your notes are stored locally and are not shared with third parties</string>
+
+    <string name="onboarding_slide3_title">Easy Manage</string>
+    <string name="onboarding_slide3_desc">Nothing Elaborate</string>
+    <string name="onboarding_slide3_subtitle">Plain notes list for effective planning and organization</string>
+    <string name="get_started">Get Started</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
 </resources>

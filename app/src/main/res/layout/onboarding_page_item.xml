@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_sea_green">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/img"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="42dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        tools:ignore="ContentDescription"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/pulsing_anim"
+        app:lottie_loop="true" />
+
+
+    <TextView
+        android:id="@+id/light_title_onboarding"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Write Simply"
+        android:textColor="@color/alice_blue"
+        android:gravity="center"
+        android:textSize="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="@id/img"
+        app:layout_constraintStart_toStartOf="@id/img"
+        app:layout_constraintTop_toBottomOf="@id/img" />
+
+    <TextView
+            android:id="@+id/weight_title_onboarding"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-7dp"
+            android:gravity="center"
+            android:text="Create Brilliantly"
+            android:textColor="@color/alice_blue"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="@dimen/_18sdp"
+            app:layout_constraintEnd_toEndOf="@+id/img"
+            app:layout_constraintStart_toStartOf="@+id/img"
+            app:layout_constraintTop_toBottomOf="@+id/light_title_onboarding"/>
+
+    <TextView
+        android:id="@+id/text_content_onboarding"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/alice_blue"
+        android:fontFamily="@font/poppins_light"
+        android:text="Plain to-do list for effective task planning and organization"
+        android:gravity="center"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weight_title_onboarding"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
