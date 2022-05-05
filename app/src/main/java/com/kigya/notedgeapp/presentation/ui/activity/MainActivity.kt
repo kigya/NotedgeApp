@@ -1,31 +1,42 @@
 package com.kigya.notedgeapp.presentation.ui.activity
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Layout
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.R.*
+import com.google.android.material.snackbar.Snackbar
 import com.kigya.notedgeapp.R
 import com.kigya.notedgeapp.data.model.observeEvent
+import com.kigya.notedgeapp.databinding.ActivityMainBinding
 import com.kigya.notedgeapp.presentation.ui.fragments.SplashFragment
 import com.kigya.notedgeapp.presentation.ui.fragments.note_list.view.NoteListFragment
 import com.kigya.notedgeapp.presentation.ui.fragments.onboarding.view.OnBoardingFragment
 import com.kigya.notedgeapp.presentation.ui.navigation.Navigator
-import com.kigya.notedgeapp.presentation.ui.note_detail.view.NoteFragment
+import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.view.NoteFragment
+import com.kigya.notedgeapp.presentation.ui.navigation.Notifier
+import com.kigya.notedgeapp.presentation.ui.navigation.NotifierCallback
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), Navigator {
+class MainActivity : AppCompatActivity(), Navigator, Notifier {
 
-    private val currentFragment: Fragment get() = supportFragmentManager.findFragmentById(R.id.main_container)!!
+    private lateinit var binding: ActivityMainBinding
+
+    private val currentFragment: Fragment get() = supportFragmentManager.findFragmentById(com.kigya.notedgeapp.R.id.main_container)!!
 
     private val viewModel: MainViewModel by viewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         setObservers()
 
@@ -69,20 +80,20 @@ class MainActivity : AppCompatActivity(), Navigator {
             firstTime -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .add(R.id.main_container, fragment)
+                    .add(com.kigya.notedgeapp.R.id.main_container, fragment)
                     .commit()
             }
             addToBackStack -> {
                 supportFragmentManager
                     .beginTransaction()
                     .addToBackStack(fragment.javaClass.name)
-                    .replace(R.id.main_container, fragment, fragment.javaClass.name)
+                    .replace(com.kigya.notedgeapp.R.id.main_container, fragment, fragment.javaClass.name)
                     .commit()
             }
             else -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.main_container, fragment, fragment.javaClass.name)
+                    .replace(com.kigya.notedgeapp.R.id.main_container, fragment, fragment.javaClass.name)
                     .commit()
             }
         }
@@ -119,6 +130,24 @@ class MainActivity : AppCompatActivity(), Navigator {
             clearBackstack = clearBackstack,
             addToBackStack = addToBackStack
         )
+    }
+
+    override fun showSnackbar(message: String, notifierCallback: NotifierCallback?) {
+        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+        val view = snackbar.view
+
+        snackbar.setBackgroundTint(ContextCompat.getColor(view.context, R.color.dark_slay_gray))
+        snackbar.setTextColor(Color.WHITE)
+
+        val sBarPar = view.findViewById<AppCompatTextView>(id.snackbar_text)
+        sBarPar.textSize = 18f
+        sBarPar.textAlignment = View.TEXT_ALIGNMENT_CENTER
+
+        view.setOnClickListener{
+            snackbar.dismiss()
+        }
+        snackbar.show()
+
     }
 
 }

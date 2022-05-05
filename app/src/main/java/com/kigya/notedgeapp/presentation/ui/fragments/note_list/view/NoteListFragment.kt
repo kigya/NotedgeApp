@@ -12,7 +12,7 @@ import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.model.observeEvent
 import com.kigya.notedgeapp.databinding.FragmentHomeBinding
 import com.kigya.notedgeapp.presentation.common.NotesRecyclerAdapter
-import com.kigya.notedgeapp.presentation.ui.note_list.viewmodel.NotesListViewModel
+import com.kigya.notedgeapp.presentation.ui.fragments.note_list.viewmodel.NotesListViewModel
 import com.kigya.notedgeapp.utils.extensions.navigator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,7 +57,7 @@ class NoteListFragment : Fragment() {
             navigator().onNoteSelected(note.id)
         }
 
-        noteListViewModel.noteListLiveData.observeEvent(viewLifecycleOwner) { notes ->
+        noteListViewModel.noteListLD.observeEvent(viewLifecycleOwner) { notes ->
             adapter.notes = notes.toMutableList()
         }
 

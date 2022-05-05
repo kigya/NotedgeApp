@@ -46,7 +46,8 @@ class OnBoardingFragment : Fragment() {
                     navigateToNextSlide()
                 }
                 OnBoardingButton.SKIP -> {
-                    Toast.makeText(requireContext(), "SKIP TODO!", Toast.LENGTH_SHORT).show()
+                    viewModel.setOnboardingDone(true)
+                    navigator().openNoteList(clearBackstack = true, addToBackStack = true)
                 }
                 OnBoardingButton.FINISH_ONBOARDING -> {
                     viewModel.setOnboardingDone(true)

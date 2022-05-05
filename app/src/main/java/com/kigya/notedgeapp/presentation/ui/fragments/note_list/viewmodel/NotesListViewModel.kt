@@ -1,4 +1,4 @@
-package com.kigya.notedgeapp.presentation.ui.note_list.viewmodel
+package com.kigya.notedgeapp.presentation.ui.fragments.note_list.viewmodel
 
 import androidx.lifecycle.*
 import com.kigya.notedgeapp.data.model.Event
@@ -22,16 +22,18 @@ class NotesListViewModel @Inject constructor(
     val onItemSelected = _onItemSelected.share()
 
     private val _noteListLiveData = MutableLiveEvent<List<Note>>()
-    val noteListLiveData = _noteListLiveData.share()
-
-    fun addNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
-        noteRepository.addNote(note)
-    }
+    val noteListLD = _noteListLiveData.share()
 
     private fun updateList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _noteListLiveData.postValue(Event(noteRepository.getNotes()))
+            if (noteListLD.value != noteRepository.getNotes()) {
+                _noteListLiveData.postValue(Event(noteRepository.getNotes()))
+            }
         }
+    }
+
+    fun addNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
+        noteRepository.addNote(note)
     }
 
     override fun onNoteDelete(id: UUID) {
@@ -47,15 +49,10 @@ class NotesListViewModel @Inject constructor(
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
-            Lifecycle.Event.ON_CREATE -> {
-                if (noteListLiveData.value?.get()?.isEmpty() == true
-                    || noteListLiveData.value == null
-                ) {
-                    updateList()
-                }
+            Lifecycle.Event.ON_START -> {
+                updateList()
             }
             Lifecycle.Event.ON_RESUME -> {
-                updateList()
             }
             else -> return
         }

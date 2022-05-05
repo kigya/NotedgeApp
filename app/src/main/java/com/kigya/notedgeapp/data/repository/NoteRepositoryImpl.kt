@@ -1,5 +1,6 @@
 package com.kigya.notedgeapp.data.repository
 
+import android.util.Log
 import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.local.room.dao.NoteDao
 import com.kigya.notedgeapp.domain.repository.NoteRepository
@@ -24,6 +25,7 @@ class NoteRepositoryImpl @Inject constructor(
 
     override suspend fun updateNote(note: Note) {
         noteDao.updateNote(note)
+        Log.d("NoteRepository", "${note.noteText} ${note.title}")
     }
 
 }
