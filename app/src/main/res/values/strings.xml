@@ -23,4 +23,6 @@
     <string name="get_started">Get Started</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
+    <string name="loading">Loading…</string>
+    <string name="note_saved">Note saved successfully</string>
 </resources>

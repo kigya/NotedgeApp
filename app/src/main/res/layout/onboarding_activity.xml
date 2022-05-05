@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.kigya.notedgeapp.presentation.ui.onboarding.customView.OnBoardingView
+<com.kigya.notedgeapp.presentation.ui.fragments.onboarding.customView.OnBoardingView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
+        android:id="@+id/custom_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:background="@color/alice_blue"
-        tools:context=".presentation.ui.onboarding.OnBoardingActivity"/>
+        tools:context=".presentation.ui.fragments.onboarding.view.OnBoardingFragment"/>

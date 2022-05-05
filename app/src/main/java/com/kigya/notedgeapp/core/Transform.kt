@@ -1,7 +1,9 @@
+package com.kigya.notedgeapp.core
+
 import android.view.View
 import kotlinx.android.synthetic.main.onboarding_page_item.view.*
 
-fun setParallaxTransformation(page: View, position: Float){
+fun setParallaxTransformation(page: View, position: Float) {
     page.apply {
         val parallaxView = this.img
         when {

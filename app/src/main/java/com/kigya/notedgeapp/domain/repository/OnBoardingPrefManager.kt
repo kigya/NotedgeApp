@@ -3,10 +3,11 @@ package com.kigya.notedgeapp.domain.repository
 import android.content.Context
 import android.content.SharedPreferences
 
-class OnBoardingPrefManager (_context: Context) {
+class OnBoardingPrefManager(_context: Context) {
 
 
-    private val pref: SharedPreferences = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    private val pref: SharedPreferences =
+        _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor = pref.edit()
 
 

@@ -7,7 +7,7 @@
     <!-- Start scaling & fading RV to give the impression of zoom in -->
     <transitionSet>
         <targets>
-            <target android:targetId="@id/container"
+            <target android:targetId="@id/main_container"
                 />
         </targets>
         <transition
