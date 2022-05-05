@@ -51,8 +51,8 @@ class MainActivity : AppCompatActivity(), Navigator, Notifier {
     }
 
     private fun setObservers() {
-        viewModel.warpToFragment.observeEvent(this) { dir ->
-            when (dir) {
+        viewModel.warpToFragment.observeEvent(this) { direction ->
+            when (direction) {
                 Directions.MainFragment -> openNoteList(
                     firstTime = false,
                     clearBackstack = true,
@@ -80,20 +80,20 @@ class MainActivity : AppCompatActivity(), Navigator, Notifier {
             firstTime -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .add(com.kigya.notedgeapp.R.id.main_container, fragment)
+                    .add(R.id.main_container, fragment)
                     .commit()
             }
             addToBackStack -> {
                 supportFragmentManager
                     .beginTransaction()
                     .addToBackStack(fragment.javaClass.name)
-                    .replace(com.kigya.notedgeapp.R.id.main_container, fragment, fragment.javaClass.name)
+                    .replace(R.id.main_container, fragment, fragment.javaClass.name)
                     .commit()
             }
             else -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(com.kigya.notedgeapp.R.id.main_container, fragment, fragment.javaClass.name)
+                    .replace(R.id.main_container, fragment, fragment.javaClass.name)
                     .commit()
             }
         }

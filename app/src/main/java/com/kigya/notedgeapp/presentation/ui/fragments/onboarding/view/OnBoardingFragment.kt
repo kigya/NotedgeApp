@@ -47,11 +47,11 @@ class OnBoardingFragment : Fragment() {
                 }
                 OnBoardingButton.SKIP -> {
                     viewModel.setOnboardingDone(true)
-                    navigator().openNoteList(clearBackstack = true, addToBackStack = true)
+                    navigator().openNoteList(clearBackstack = true, addToBackStack = false)
                 }
                 OnBoardingButton.FINISH_ONBOARDING -> {
                     viewModel.setOnboardingDone(true)
-                    navigator().openNoteList(clearBackstack = true, addToBackStack = true)
+                    navigator().openNoteList(clearBackstack = true, addToBackStack = false)
                 }
             }
         }
