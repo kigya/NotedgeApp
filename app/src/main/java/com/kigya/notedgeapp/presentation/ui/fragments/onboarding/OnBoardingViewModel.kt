@@ -8,9 +8,9 @@ import javax.inject.Inject
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val noteAppPreferences: NoteAppPreferences
-) : ViewModel(){
+) : ViewModel() {
 
-    fun setOnboardingDone(status: Boolean){
+    fun setOnboardingDone(status: Boolean) {
         noteAppPreferences.setOnboardingDone(status)
     }
 

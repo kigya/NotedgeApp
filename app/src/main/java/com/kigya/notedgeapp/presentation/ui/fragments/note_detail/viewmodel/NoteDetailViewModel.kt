@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
     private val noteRepository: NoteRepository
-) : ViewModel(){
+) : ViewModel() {
 
     private val noteIdLiveData = MutableLiveData<UUID>()
     private val _noteLiveData = MutableLiveEvent<Note?>()

@@ -29,7 +29,8 @@ class NoteAppPreferencesImpl @Inject constructor() : NoteAppPreferences {
         rootPreferences?.edit()?.putBoolean(ONBOARDING, status)?.apply() ?: Unit
     }
 
-    override fun getOnboardingPassedStatus(): Boolean = rootPreferences?.getBoolean(ONBOARDING, false) ?: false
+    override fun getOnboardingPassedStatus(): Boolean =
+        rootPreferences?.getBoolean(ONBOARDING, false) ?: false
 
     override fun clearPreferences() {
         rootPreferences?.edit { clear() }

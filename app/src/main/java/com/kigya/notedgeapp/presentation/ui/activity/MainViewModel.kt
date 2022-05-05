@@ -17,17 +17,17 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val noteAppPreferences: NoteAppPreferences
-): ViewModel() {
+) : ViewModel() {
 
     private val _warpToFragment = MutableLiveEvent<Directions>()
     val warpToFragment = _warpToFragment.share()
 
-    fun defineIfFirstTime(){
+    fun defineIfFirstTime() {
         viewModelScope.launch {
             delay(1500)
-            if (noteAppPreferences.getOnboardingPassedStatus()){
+            if (noteAppPreferences.getOnboardingPassedStatus()) {
                 _warpToFragment.value = Event(Directions.MainFragment)
-            }else{
+            } else {
                 _warpToFragment.value = Event(Directions.Onboarding)
             }
         }

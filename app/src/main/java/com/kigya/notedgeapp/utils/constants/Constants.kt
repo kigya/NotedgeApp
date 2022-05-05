@@ -9,4 +9,5 @@ object Constants {
     const val ARG_NOTE_ID = "note_id"
 
     const val ONBOARDING = "ONBOARDING"
+
 }

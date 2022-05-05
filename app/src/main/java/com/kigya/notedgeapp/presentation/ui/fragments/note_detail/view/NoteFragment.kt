@@ -92,10 +92,12 @@ class NoteFragment : Fragment() {
                 updateUI()
             }
         }
-        noteDetailViewModel.savedNotificationLD.observeEvent(viewLifecycleOwner){ event ->
-            when(event){
-                EventsNotificationContract.POSITIVE -> {notifier().showSnackbar(getString(R.string.note_saved))}
-                else ->{}
+        noteDetailViewModel.savedNotificationLD.observeEvent(viewLifecycleOwner) { event ->
+            when (event) {
+                EventsNotificationContract.POSITIVE -> {
+                    notifier().showSnackbar(getString(R.string.note_saved))
+                }
+                else -> {}
             }
             Log.d(TAG, "savedNotificationLD Event")
         }

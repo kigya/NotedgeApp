@@ -43,7 +43,11 @@ class FadeTransition : Transition {
         captureValues(transitionValues)
     }
 
-    override fun createAnimator(sceneRoot: ViewGroup, startValues: TransitionValues, endValues: TransitionValues): Animator {
+    override fun createAnimator(
+        sceneRoot: ViewGroup,
+        startValues: TransitionValues,
+        endValues: TransitionValues
+    ): Animator {
         val view = endValues.view
         if (startAlpha != endAlpha) view.alpha = endAlpha
         return ObjectAnimator.ofFloat(view, View.ALPHA, startAlpha, endAlpha)

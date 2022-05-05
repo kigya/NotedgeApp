@@ -75,10 +75,10 @@ class OnBoardingView @JvmOverloads constructor(
         nextBtn.setOnClickListener {
             this.listener?.invoke(OnBoardingButton.NEXT)
         }
-        skipBtn.setOnClickListener{
+        skipBtn.setOnClickListener {
             this.listener?.invoke(OnBoardingButton.SKIP)
         }
-        startBtn.setOnClickListener{
+        startBtn.setOnClickListener {
             this.listener?.invoke(OnBoardingButton.FINISH_ONBOARDING)
         }
     }

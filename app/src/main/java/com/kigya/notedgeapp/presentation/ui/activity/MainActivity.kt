@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(), Navigator, Notifier {
         sBarPar.textSize = 18f
         sBarPar.textAlignment = View.TEXT_ALIGNMENT_CENTER
 
-        view.setOnClickListener{
+        view.setOnClickListener {
             snackbar.dismiss()
         }
         snackbar.show()

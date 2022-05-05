@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kigya.notedgeapp.databinding.OnboardingActivityBinding
@@ -46,20 +45,21 @@ class OnBoardingFragment : Fragment() {
                     navigateToNextSlide()
                 }
                 OnBoardingButton.SKIP -> {
-                    viewModel.setOnboardingDone(true)
-                    navigator().openNoteList(clearBackstack = true, addToBackStack = false)
+                    openNoteList()
                 }
                 OnBoardingButton.FINISH_ONBOARDING -> {
-                    viewModel.setOnboardingDone(true)
-                    navigator().openNoteList(clearBackstack = true, addToBackStack = false)
+                    openNoteList()
                 }
             }
         }
     }
 
-    private fun setObservers() {
-
+    private fun openNoteList() {
+        viewModel.setOnboardingDone(true)
+        navigator().openNoteList(clearBackstack = true, addToBackStack = false)
     }
+
+    private fun setObservers() = Unit
 
     private fun navigateToNextSlide() {
         val nextSlidePos: Int = binding.customView.slider?.currentItem?.plus(1) ?: 0
