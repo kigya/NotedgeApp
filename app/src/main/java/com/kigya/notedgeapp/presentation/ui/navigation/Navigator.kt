@@ -6,8 +6,12 @@ interface Navigator {
 
     fun onNoteSelected(noteId: UUID)
 
-    fun openNoteList(clearBackstack: Boolean = true, addToBackStack:Boolean = false)
+    fun openNoteList( firstTime: Boolean = false,
+                      addToBackStack: Boolean = true,
+                      clearBackstack: Boolean = false)
 
-    fun openOnboarding(clearBackstack: Boolean = true, addToBackStack:Boolean = false)
+    fun openOnboarding( firstTime: Boolean = false,
+                        addToBackStack: Boolean = true,
+                        clearBackstack: Boolean = false)
 
 }

@@ -42,8 +42,16 @@ class MainActivity : AppCompatActivity(), Navigator {
     private fun setObservers() {
         viewModel.warpToFragment.observeEvent(this) { dir ->
             when (dir) {
-                Directions.MainFragment -> openNoteList(true)
-                Directions.Onboarding -> openFragment(OnBoardingFragment(), firstTime = false, clearBackstack = true, addToBackStack = false)
+                Directions.MainFragment -> openNoteList(
+                    firstTime = false,
+                    clearBackstack = true,
+                    addToBackStack = false
+                )
+                Directions.Onboarding -> openOnboarding(
+                    firstTime = false,
+                    clearBackstack = true,
+                    addToBackStack = false
+                )
             }
         }
     }
@@ -87,12 +95,30 @@ class MainActivity : AppCompatActivity(), Navigator {
         openFragment(NoteFragment.newInstance(noteId))
     }
 
-    override fun openNoteList(clearBackstack: Boolean, addToBackStack: Boolean) {
-        openFragment(NoteListFragment.newInstance(), clearBackstack, addToBackStack)
+    override fun openNoteList(
+        firstTime: Boolean,
+        addToBackStack: Boolean,
+        clearBackstack: Boolean
+    ) {
+        openFragment(
+            NoteListFragment.newInstance(),
+            firstTime = firstTime,
+            clearBackstack = clearBackstack,
+            addToBackStack = addToBackStack
+        )
     }
 
-    override fun openOnboarding(clearBackstack: Boolean, addToBackStack: Boolean) {
-        openFragment(OnBoardingFragment(), clearBackstack, addToBackStack)
+    override fun openOnboarding(
+        firstTime: Boolean,
+        addToBackStack: Boolean,
+        clearBackstack: Boolean
+    ) {
+        openFragment(
+            OnBoardingFragment(),
+            firstTime = firstTime,
+            clearBackstack = clearBackstack,
+            addToBackStack = addToBackStack
+        )
     }
 
 }
