@@ -3,11 +3,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    [Group 4](https://user-images.githubusercontent.com/73034324/167228677-853727e4-58b3-47ed-9666-87d90063b479.svg)
-
+    <a href='https://svgshare.com/s/gwU' ><img src='https://svgshare.com/i/gwU.svg' title='' /></a>
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">NOTEDGE</h3>
 
   <p align="center">
     Note-taking Android app
