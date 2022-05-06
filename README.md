@@ -1,9 +1,23 @@
+
 # Notedge
 
 Note-taking Android app
 
 
-<a href="https://ibb.co/0n2rr0W"><img src="https://i.ibb.co/514LLQz/NOTEDGE-2000-2000-px.png" alt="NOTEDGE-2000-2000-px" border="0"></a>
+## Tech Stack
+
+[Appcompat](https://developer.android.com/jetpack/androidx/releases/appcompat)\
+[Material Design](https://material.io/develop/android/docs/getting-started)\
+[Room](https://developer.android.com/jetpack/androidx/releases/room)\
+[RecyclerView](https://developer.android.com/jetpack/androidx/releases/recyclerview)\
+[RecyclerView Animators](https://github.com/wasabeef/recyclerview-animators)\
+[Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle)\
+[Rounded ImageView](https://github.com/vinc3m1/RoundedImageView)\
+[Hilt](https://developer.android.com/training/dependency-injection/hilt-android)\
+[ViewPager2](https://developer.android.com/jetpack/androidx/releases/viewpager2)\
+[Dotsidicator](https://github.com/tommybuonomo/dotsindicator)\
+[Lottie](https://lottiefiles.com/blog/working-with-lottie/getting-started-with-lottie-animations-in-android-app)\
+[Preference](https://developer.android.com/jetpack/androidx/releases/preference)\
 
 
 ## Demo
@@ -23,13 +37,7 @@ Insert gif or link to demo
 ## Installation for Android
 
 Link To Web
-    
-## Acknowledgements
-
- - [Big Nerd Ranch Team](https://forums.bignerdranch.com/c/android-programming-4th-edition/658)
-
-
-## Color Reference
+    ## Color Reference
 
 | Color             | Hex                                                                |
 | ----------------- | ------------------------------------------------------------------ |
@@ -40,9 +48,13 @@ Link To Web
 | Alice Blue| ![#F4F7FB](https://via.placeholder.com/10/F4F7FB?text=+) #F4F7FB |
 
 
+## Acknowledgements
+
+ - [Big Nerd Ranch Team](https://forums.bignerdranch.com/c/android-programming-4th-edition/658)
+
+
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
 
