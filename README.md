@@ -50,7 +50,9 @@ Insert gif or link to demo
 ## Installation for Android
 
 Link To Web
-    ## Color Reference
+
+
+## Color Reference
 
 | Color             | Hex                                                                |
 | ----------------- | ------------------------------------------------------------------ |
