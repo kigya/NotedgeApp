@@ -1,7 +1,21 @@
 
-# Notedge
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    [Group 4](https://user-images.githubusercontent.com/73034324/167228677-853727e4-58b3-47ed-9666-87d90063b479.svg)
 
-Note-taking Android app
+  </a>
+
+  <h3 align="center">Best-README-Template</h3>
+
+  <p align="center">
+    Note-taking Android app
+    <br />
+    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Download »</strong></a>
+    <br />
+  </p>
+</div>
 
 
 ## Tech Stack
