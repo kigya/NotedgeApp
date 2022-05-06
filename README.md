@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <a href='https://svgshare.com/s/gwU' ><img src='https://svgshare.com/i/gwU.svg' title='' /></a>
+    <a href='https://svgshare.com/s/gwU' ><img src='https://svgshare.com/i/gwU.svg' title='' width="200" heigth-"200"/></a>
   </a>
 
   <h3 align="center">NOTEDGE</h3>
@@ -30,7 +30,7 @@
 [ViewPager2](https://developer.android.com/jetpack/androidx/releases/viewpager2)\
 [Dotsidicator](https://github.com/tommybuonomo/dotsindicator)\
 [Lottie](https://lottiefiles.com/blog/working-with-lottie/getting-started-with-lottie-animations-in-android-app)\
-[Preference](https://developer.android.com/jetpack/androidx/releases/preference)\
+[Preference](https://developer.android.com/jetpack/androidx/releases/preference)
 
 
 ## Demo
