@@ -86,7 +86,7 @@ class NoteFragment : Fragment() {
     }
 
     private fun initializeObservers() {
-        noteDetailViewModel.noteLiveData.observeEvent(viewLifecycleOwner) { note ->
+        noteDetailViewModel.noteLiveData.observe(viewLifecycleOwner) { note ->
             note?.let {
                 this.note = note
                 updateUI()

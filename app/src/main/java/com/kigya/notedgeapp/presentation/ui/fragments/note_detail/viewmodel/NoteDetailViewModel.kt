@@ -19,7 +19,7 @@ class NoteDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val noteIdLiveData = MutableLiveData<UUID>()
-    private val _noteLiveData = MutableLiveEvent<Note?>()
+    private val _noteLiveData = MutableLiveData<Note?>()
     val noteLiveData = _noteLiveData.share()
 
     private val _savedNotificationLD = MutableLiveEvent<EventsNotificationContract>()
@@ -30,7 +30,7 @@ class NoteDetailViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 val id = noteIdLiveData.value
                 if (id != null) {
-                    _noteLiveData.postValue(Event(noteRepository.getNote(id)))
+                    _noteLiveData.postValue(noteRepository.getNote(id))
                 }
             }
         }
