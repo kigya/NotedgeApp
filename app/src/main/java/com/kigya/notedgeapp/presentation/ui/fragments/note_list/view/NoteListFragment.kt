@@ -10,12 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.transition.MaterialFadeThrough
+import com.kigya.notedgeapp.R
 import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.model.observeEvent
 import com.kigya.notedgeapp.databinding.FragmentHomeBinding
 import com.kigya.notedgeapp.presentation.common.NotesRecyclerAdapter
+import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.EventsNotificationContract
 import com.kigya.notedgeapp.presentation.ui.fragments.note_list.viewmodel.NotesListViewModel
 import com.kigya.notedgeapp.utils.extensions.navigator
+import com.kigya.notedgeapp.utils.extensions.notifier
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,12 +56,12 @@ class NoteListFragment : Fragment() {
 
         lifecycle.addObserver(noteListViewModel)
 
-        binding.createNoteButton.setOnClickListener {
-            val note = Note()
-            noteListViewModel.addNote(note)
-            navigator().onNoteSelected(note)
-        }
 
+        initializeListeners()
+        initializeObservers()
+    }
+
+    private fun initializeListeners() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -71,32 +74,49 @@ class NoteListFragment : Fragment() {
                 return true
             }
         })
-
         binding.searchView.setOnCloseListener {
 
             return@setOnCloseListener true
         }
-
-        noteListViewModel.noteListLiveData().observe(viewLifecycleOwner) { notes ->
-            adapter.notes = notes.toMutableList()
-        }
-
-        noteListViewModel.onItemSelected.observeEvent(viewLifecycleOwner) { note ->
-            navigator().onNoteSelected(note)
-        }
-
         binding.root.setOnClickListener {
             with(binding.searchView) {
                 setQuery("", false)
                 clearFocus()
             }
         }
-
+        binding.createNoteButton.setOnClickListener {
+            navigator().onNoteSelected(Note())
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun initializeObservers(){
+
+        noteListViewModel.noteListLiveData().observe(viewLifecycleOwner) { notes ->
+            adapter.notes = notes.toMutableList()
+        }
+        noteListViewModel.onItemSelected.observeEvent(viewLifecycleOwner) { note ->
+            navigator().onNoteSelected(note)
+        }
+
+        noteListViewModel.notificationLD.observeEvent(viewLifecycleOwner) { event ->
+            when (event) {
+                EventsNotificationContract.SAVE -> {
+                    notifier().showSnackbar(getString(R.string.note_saved))
+                }
+                EventsNotificationContract.DELETED -> {
+                    notifier().showSnackbar(getString(R.string.note_removed))
+                }
+            }
+        }
+    }
+
+    private fun search(request: String) {
+        val query = "%$request%"
+        noteListViewModel.search(query).observe(viewLifecycleOwner) { list ->
+            list.let {
+                adapter.notes = it.toMutableList()
+            }
+        }
     }
 
     private fun setFragmentTransitions() {
@@ -104,6 +124,11 @@ class NoteListFragment : Fragment() {
         enterTransition = MaterialFadeThrough()
         returnTransition = MaterialFadeThrough()
         reenterTransition = MaterialFadeThrough()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
@@ -114,15 +139,6 @@ class NoteListFragment : Fragment() {
         @JvmStatic
         private val TAG = "NoteListFragment"
 
-    }
-
-    private fun search(request: String) {
-        val query = "%$request%"
-        noteListViewModel.search(query).observe(viewLifecycleOwner) { list ->
-            list.let {
-                adapter.notes = it.toMutableList()
-            }
-        }
     }
 
 }

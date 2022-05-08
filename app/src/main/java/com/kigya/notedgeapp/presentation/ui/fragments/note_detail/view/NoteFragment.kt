@@ -68,12 +68,11 @@ class NoteFragment : Fragment() {
 
     private fun initializeListeners() {
         binding.imgDone.setOnClickListener {
-            noteDetailViewModel.saveNote(note)
+            noteDetailViewModel.validateNote(note)
         }
 
         binding.imgBack.setOnClickListener {
-            noteDetailViewModel.saveNote(note)
-            Log.d(TAG, note.title)
+            noteDetailViewModel.validateNote(note)
         }
     }
 
@@ -84,15 +83,17 @@ class NoteFragment : Fragment() {
                 updateUI()
             }
         }
-        noteDetailViewModel.savedNotificationLD.observeEvent(viewLifecycleOwner) { event ->
+        noteDetailViewModel.notificationLD.observeEvent(viewLifecycleOwner) { event ->
             when (event) {
-                EventsNotificationContract.POSITIVE -> {
+                EventsNotificationContract.SAVE -> {
                     notifier().showSnackbar(getString(R.string.note_saved))
                 }
-                else -> {}
+                EventsNotificationContract.DELETED -> {
+                    notifier().showSnackbar(getString(R.string.note_removed))
+                }
             }
-            Log.d(TAG, "savedNotificationLD Event")
         }
+
         noteDetailViewModel.popBackstack.observe(viewLifecycleOwner) {
             parentFragmentManager.popBackStack()
         }
@@ -118,6 +119,7 @@ class NoteFragment : Fragment() {
         fun newInstance(note: Note) = NoteFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(ARG_NOTE, note)
+                Log.d(TAG, "newInstance $note")
             }
         }
 

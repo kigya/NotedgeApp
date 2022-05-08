@@ -2,7 +2,6 @@ package com.kigya.notedgeapp.presentation.ui.activity
 
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Layout
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,28 +9,27 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.google.android.material.R.*
+import com.google.android.material.R.id
 import com.google.android.material.snackbar.Snackbar
 import com.kigya.notedgeapp.R
 import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.model.observeEvent
 import com.kigya.notedgeapp.databinding.ActivityMainBinding
 import com.kigya.notedgeapp.presentation.ui.fragments.SplashFragment
+import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.view.NoteFragment
 import com.kigya.notedgeapp.presentation.ui.fragments.note_list.view.NoteListFragment
 import com.kigya.notedgeapp.presentation.ui.fragments.onboarding.view.OnBoardingFragment
 import com.kigya.notedgeapp.presentation.ui.navigation.Navigator
-import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.view.NoteFragment
 import com.kigya.notedgeapp.presentation.ui.navigation.Notifier
 import com.kigya.notedgeapp.presentation.ui.navigation.NotifierCallback
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Navigator, Notifier {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val currentFragment: Fragment get() = supportFragmentManager.findFragmentById(com.kigya.notedgeapp.R.id.main_container)!!
+    private val currentFragment: Fragment get() = supportFragmentManager.findFragmentById(R.id.main_container)!!
 
     private val viewModel: MainViewModel by viewModels()
 
