@@ -1,5 +1,6 @@
 package com.kigya.notedgeapp.presentation.ui.fragments.note_list.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.kigya.notedgeapp.data.model.Event
 import com.kigya.notedgeapp.data.model.MutableLiveEvent
@@ -24,7 +25,7 @@ class NotesListViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
 ) : ViewModel(), NoteActionListener, LifecycleEventObserver {
 
-    private val _onItemSelected = MutableLiveEvent<UUID>()
+    private val _onItemSelected = MutableLiveEvent<Note>()
     val onItemSelected = _onItemSelected.share()
 
     fun noteListLiveData() : LiveData<List<Note>> = getNotesUseCase().asLiveData()
@@ -43,8 +44,8 @@ class NotesListViewModel @Inject constructor(
         }
     }
 
-    override fun onNoteSelected(noteId: UUID) {
-        _onItemSelected.value = Event(noteId)
+    override fun onNoteSelected(note: Note) {
+        _onItemSelected.value = Event(note)
     }
 
 
@@ -55,6 +56,11 @@ class NotesListViewModel @Inject constructor(
             }
             else -> return
         }
+    }
+
+    companion object{
+        @JvmStatic
+        private val TAG = "NoteListVM"
     }
 
 }

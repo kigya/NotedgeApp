@@ -1,13 +1,12 @@
 package com.kigya.notedgeapp.presentation.ui.fragments.note_detail.view
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kigya.notedgeapp.R
@@ -16,11 +15,10 @@ import com.kigya.notedgeapp.data.model.observeEvent
 import com.kigya.notedgeapp.databinding.FragmentCreateNoteBinding
 import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.EventsNotificationContract
 import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.viewmodel.NoteDetailViewModel
-import com.kigya.notedgeapp.utils.constants.Constants.ARG_NOTE_ID
+import com.kigya.notedgeapp.utils.constants.Constants.ARG_NOTE
 import com.kigya.notedgeapp.utils.constants.Constants.NOTE_DATE_FORMAT
 import com.kigya.notedgeapp.utils.extensions.notifier
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class NoteFragment : Fragment() {
@@ -30,15 +28,11 @@ class NoteFragment : Fragment() {
 
     private val noteDetailViewModel by viewModels<NoteDetailViewModel>()
 
-    private lateinit var note: Note
-
-    private val opPauseExecute = { noteDetailViewModel.saveNote(note) }
-
+    private var note = Note()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        note = Note()
-        val noteId: UUID = arguments?.getSerializable(ARG_NOTE_ID) as UUID
-        noteDetailViewModel.loadNote(noteId)
+        note = arguments?.getParcelable(ARG_NOTE) ?: Note()
+        noteDetailViewModel.loadNote(note)
     }
 
     override fun onCreateView(
@@ -63,25 +57,23 @@ class NoteFragment : Fragment() {
     }
 
     private fun initializeNote() {
-        val noteId = arguments?.getSerializable(ARG_NOTE_ID) as UUID
-        noteDetailViewModel.loadNote(noteId)
-
-        val titleWatcher = titleTextWatcher()
-        binding.noteTitle.addTextChangedListener(titleWatcher)
-
-        val noteTextWatcher = noteContentTextWatcher()
-        binding.noteDescription.addTextChangedListener(noteTextWatcher)
+        binding.noteTitle.doOnTextChanged { s, _, _, _ ->
+            note.title = s.toString()
+        }
+        binding.noteDescription.doOnTextChanged { s, _, _, _ ->
+            note.noteText = s.toString()
+            Log.d(TAG, s.toString())
+        }
     }
 
     private fun initializeListeners() {
         binding.imgDone.setOnClickListener {
             noteDetailViewModel.saveNote(note)
-            parentFragmentManager.popBackStack()
         }
 
         binding.imgBack.setOnClickListener {
             noteDetailViewModel.saveNote(note)
-            parentFragmentManager.popBackStack()
+            Log.d(TAG, note.title)
         }
     }
 
@@ -101,11 +93,9 @@ class NoteFragment : Fragment() {
             }
             Log.d(TAG, "savedNotificationLD Event")
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        opPauseExecute.invoke()
+        noteDetailViewModel.popBackstack.observe(viewLifecycleOwner) {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     override fun onDestroyView() {
@@ -119,49 +109,17 @@ class NoteFragment : Fragment() {
         binding.noteDatetime.text = DateFormat.format(NOTE_DATE_FORMAT, note.dateTime)
     }
 
-    private fun titleTextWatcher() = object : TextWatcher {
-        override fun beforeTextChanged(
-            sequence: CharSequence?,
-            start: Int,
-            count: Int,
-            after: Int
-        ) = Unit
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            note.title = s.toString()
-        }
-
-        override fun afterTextChanged(sequence: Editable?) = Unit
-    }
-
-    private fun noteContentTextWatcher() = object : TextWatcher {
-        override fun beforeTextChanged(
-            sequence: CharSequence?,
-            start: Int,
-            count: Int,
-            after: Int
-        ) = Unit
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            note.noteText = s.toString()
-        }
-
-        override fun afterTextChanged(sequence: Editable?) = Unit
-    }
-
     companion object {
 
         @JvmStatic
         private val TAG = "NoteFragment"
 
-        fun newInstance(noteId: UUID): NoteFragment {
-            val args = Bundle().apply {
-                putSerializable(ARG_NOTE_ID, noteId)
-            }
-            return NoteFragment().apply {
-                arguments = args
+        @JvmStatic
+        fun newInstance(note: Note) = NoteFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(ARG_NOTE, note)
             }
         }
-    }
 
+    }
 }

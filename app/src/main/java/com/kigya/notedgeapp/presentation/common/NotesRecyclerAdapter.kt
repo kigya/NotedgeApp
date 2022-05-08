@@ -21,7 +21,7 @@ import java.util.*
 
 interface NoteActionListener {
     fun onNoteDelete(id: UUID)
-    fun onNoteSelected(noteId: UUID)
+    fun onNoteSelected(note: Note)
 }
 
 class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
@@ -87,7 +87,7 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
 
         override fun onClick(v: View) {
             if (_removing == null || note.id != _removing) {
-                actionListener.onNoteSelected(note.id)
+                actionListener.onNoteSelected(note)
             }
         }
 

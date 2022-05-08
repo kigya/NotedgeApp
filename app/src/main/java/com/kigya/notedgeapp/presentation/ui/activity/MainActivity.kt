@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.R.*
 import com.google.android.material.snackbar.Snackbar
 import com.kigya.notedgeapp.R
+import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.model.observeEvent
 import com.kigya.notedgeapp.databinding.ActivityMainBinding
 import com.kigya.notedgeapp.presentation.ui.fragments.SplashFragment
@@ -102,8 +103,8 @@ class MainActivity : AppCompatActivity(), Navigator, Notifier {
     private fun clearBackStack() =
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-    override fun onNoteSelected(noteId: UUID) {
-        openFragment(NoteFragment.newInstance(noteId))
+    override fun onNoteSelected(note: Note) {
+        openFragment(NoteFragment.newInstance(note))
     }
 
     override fun openNoteList(

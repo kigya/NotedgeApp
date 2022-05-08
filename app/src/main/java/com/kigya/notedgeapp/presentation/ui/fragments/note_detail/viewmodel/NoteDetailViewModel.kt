@@ -1,55 +1,76 @@
 package com.kigya.notedgeapp.presentation.ui.fragments.note_detail.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.kigya.notedgeapp.data.model.Event
 import com.kigya.notedgeapp.data.model.MutableLiveEvent
 import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.model.share
 import com.kigya.notedgeapp.domain.repository.NoteRepository
+import com.kigya.notedgeapp.domain.usecase.DeleteNoteUseCase
+import com.kigya.notedgeapp.domain.usecase.UpdateNoteUseCase
 import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.EventsNotificationContract
+import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.view.NoteFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
-    private val noteRepository: NoteRepository
-) : ViewModel() {
+    private val updateNoteUseCase: UpdateNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel(), LifecycleEventObserver {
 
-    private val noteIdLiveData = MutableLiveData<UUID>()
-    private val _noteLiveData = MutableLiveData<Note?>()
+    private val _noteLiveData = savedStateHandle.getLiveData<Note>(SSH_NOTE)
     val noteLiveData = _noteLiveData.share()
 
     private val _savedNotificationLD = MutableLiveEvent<EventsNotificationContract>()
     val savedNotificationLD = _savedNotificationLD.share()
 
-    init {
-        if (noteLiveData.value == null) {
-            viewModelScope.launch(Dispatchers.IO) {
-                val id = noteIdLiveData.value
-                if (id != null) {
-                    _noteLiveData.postValue(noteRepository.getNote(id))
-                }
-            }
-        }
-    }
+    private val _popBackstack = MutableLiveEvent<Unit>()
+    val popBackstack = _popBackstack.share()
 
-    fun loadNote(noteId: UUID) {
-        noteIdLiveData.value = noteId
+    fun loadNote(note: Note) {
+        if (noteLiveData.value != note){
+            _noteLiveData.value = note
+        }
     }
 
     fun saveNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            noteRepository.updateNote(note)
+            updateNoteUseCase(note)
+            delay(10)
+            _savedNotificationLD.postValue(Event(EventsNotificationContract.POSITIVE))
+            _popBackstack.postValue(Event(Unit))
         }
-        _savedNotificationLD.value = Event(EventsNotificationContract.POSITIVE)
     }
 
     // todo delete implementation
     fun deleteNote(id: UUID) = viewModelScope.launch(Dispatchers.IO) {
-        noteRepository.deleteNote(id)
+        deleteNoteUseCase(id)
+    }
+
+    companion object{
+        @JvmStatic
+        private val TAG = "NoteDetailVM"
+
+        @JvmStatic
+        private val SSH_NOTE = "SSH_NOTE"
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when(event){
+            Lifecycle.Event.ON_DESTROY -> {
+                if (!savedStateHandle.contains(SSH_NOTE)){
+                    savedStateHandle.set(SSH_NOTE, noteLiveData.value)
+                }
+            }
+            else -> {}
+        }
     }
 
 }

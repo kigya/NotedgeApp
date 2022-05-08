@@ -1,10 +1,10 @@
 package com.kigya.notedgeapp.presentation.ui.navigation
 
-import java.util.*
+import com.kigya.notedgeapp.data.model.Note
 
 interface Navigator {
 
-    fun onNoteSelected(noteId: UUID)
+    fun onNoteSelected(note: Note)
 
     fun openNoteList(
         firstTime: Boolean = false,

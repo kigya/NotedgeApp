@@ -6,26 +6,28 @@
     android:layout_height="match_parent"
     android:background="@color/ebony_clay">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/imgBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/back_to_home_button"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/alice_blue" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/imgDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/save_note_button"
         android:src="@drawable/ic_tick"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,16 +99,16 @@
         android:autofillHints=""
         android:background="@null"
         android:fontFamily="@font/poppins"
+        android:gravity="start"
         android:hint="@string/enter_note_here"
         android:inputType="textMultiLine"
         android:padding="@dimen/_10sdp"
         android:textColor="@color/alice_blue"
         android:textColorHint="@color/alice_blue_opacity"
         android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="left"
         app:layout_constraintTop_toBottomOf="@id/note_datetime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

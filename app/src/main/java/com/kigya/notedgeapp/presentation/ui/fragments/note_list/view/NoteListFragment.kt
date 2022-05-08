@@ -1,6 +1,7 @@
 package com.kigya.notedgeapp.presentation.ui.fragments.note_list.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +56,7 @@ class NoteListFragment : Fragment() {
         binding.createNoteButton.setOnClickListener {
             val note = Note()
             noteListViewModel.addNote(note)
-            navigator().onNoteSelected(note.id)
+            navigator().onNoteSelected(note)
         }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -71,12 +72,24 @@ class NoteListFragment : Fragment() {
             }
         })
 
+        binding.searchView.setOnCloseListener {
+
+            return@setOnCloseListener true
+        }
+
         noteListViewModel.noteListLiveData().observe(viewLifecycleOwner) { notes ->
             adapter.notes = notes.toMutableList()
         }
 
-        noteListViewModel.onItemSelected.observeEvent(viewLifecycleOwner) { id ->
-            navigator().onNoteSelected(id)
+        noteListViewModel.onItemSelected.observeEvent(viewLifecycleOwner) { note ->
+            navigator().onNoteSelected(note)
+        }
+
+        binding.root.setOnClickListener {
+            with(binding.searchView) {
+                setQuery("", false)
+                clearFocus()
+            }
         }
 
     }
@@ -97,6 +110,10 @@ class NoteListFragment : Fragment() {
         fun newInstance(): NoteListFragment {
             return NoteListFragment()
         }
+
+        @JvmStatic
+        private val TAG = "NoteListFragment"
+
     }
 
     private fun search(request: String) {
