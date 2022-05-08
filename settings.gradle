@@ -3,6 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        //noinspection JcenterRepositoryObsolete
         jcenter()
     }
 }
@@ -11,9 +12,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        //noinspection JcenterRepositoryObsolete
         jcenter()
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "NotedgeApp"
+rootProject.name = "Notedge"
 include ':app'
