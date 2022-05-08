@@ -51,7 +51,7 @@ class NoteDetailViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             addNoteUseCase(note)
         }
-        _notificationLD.postValue(Event(EventsNotificationContract.SAVE))
+        _notificationLD.postValue(Event(EventsNotificationContract.SAVED))
     }
 
     private fun popBackStack() {

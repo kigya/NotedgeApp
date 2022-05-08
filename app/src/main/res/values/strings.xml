@@ -25,5 +25,5 @@
     <string name="skip">Skip</string>
     <string name="loading">Loading…</string>
     <string name="note_saved">Note saved successfully</string>
-    <string name="note_removed">Note removed</string>
+    <string name="removed">Note removed</string>
 </resources>

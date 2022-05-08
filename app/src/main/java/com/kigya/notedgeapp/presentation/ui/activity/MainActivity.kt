@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -131,7 +132,7 @@ class MainActivity : AppCompatActivity(), Navigator, Notifier {
         )
     }
 
-    override fun showSnackbar(message: String, notifierCallback: NotifierCallback?) {
+    override fun showSnackbar(@StringRes message: Int, notifierCallback: NotifierCallback?) {
         val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
         val view = snackbar.view
 
@@ -139,7 +140,7 @@ class MainActivity : AppCompatActivity(), Navigator, Notifier {
         snackbar.setTextColor(Color.WHITE)
 
         val sBarPar = view.findViewById<AppCompatTextView>(id.snackbar_text)
-        sBarPar.textSize = 18f
+        sBarPar.textSize = 17f
         sBarPar.textAlignment = View.TEXT_ALIGNMENT_CENTER
 
         view.setOnClickListener {

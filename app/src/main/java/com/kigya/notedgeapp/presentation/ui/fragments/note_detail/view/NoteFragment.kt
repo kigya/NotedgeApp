@@ -85,11 +85,11 @@ class NoteFragment : Fragment() {
         }
         noteDetailViewModel.notificationLD.observeEvent(viewLifecycleOwner) { event ->
             when (event) {
-                EventsNotificationContract.SAVE -> {
-                    notifier().showSnackbar(getString(R.string.note_saved))
+                EventsNotificationContract.SAVED -> {
+                    notifier().showSnackbar(R.string.note_saved)
                 }
                 EventsNotificationContract.DELETED -> {
-                    notifier().showSnackbar(getString(R.string.note_removed))
+                    notifier().showSnackbar(R.string.removed)
                 }
             }
         }

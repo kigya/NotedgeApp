@@ -1,7 +1,6 @@
 package com.kigya.notedgeapp.presentation.ui.fragments.note_list.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,7 +88,7 @@ class NoteListFragment : Fragment() {
         }
     }
 
-    private fun initializeObservers(){
+    private fun initializeObservers() {
 
         noteListViewModel.noteListLiveData().observe(viewLifecycleOwner) { notes ->
             adapter.notes = notes.toMutableList()
@@ -100,11 +99,11 @@ class NoteListFragment : Fragment() {
 
         noteListViewModel.notificationLD.observeEvent(viewLifecycleOwner) { event ->
             when (event) {
-                EventsNotificationContract.SAVE -> {
-                    notifier().showSnackbar(getString(R.string.note_saved))
+                EventsNotificationContract.SAVED -> {
+                    notifier().showSnackbar(R.string.note_saved)
                 }
                 EventsNotificationContract.DELETED -> {
-                    notifier().showSnackbar(getString(R.string.note_removed))
+                    notifier().showSnackbar(R.string.removed)
                 }
             }
         }
