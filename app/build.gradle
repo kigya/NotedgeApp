@@ -36,6 +36,21 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        applicationVariants.all { variants ->
+            variants.outputs.all { output ->
+
+                def appTitle = rootProject.name
+                def date = new Date()
+                def formattedDate = date.format('dd.MM.yyyy')
+                def sep = "_"
+                def fileType = ".apk"
+                def finalAppName = appTitle + sep + versionName + sep + formattedDate + fileType
+
+                outputFileName = new File(finalAppName)
+            }
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
