@@ -11,7 +11,7 @@
   <p align="center">
     Note-taking Android app
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Download »</strong></a>
+    <a href="https://notedge.netlify.app/"><strong>Download »</strong></a>
     <br />
   </p>
 </div>
@@ -45,11 +45,6 @@ Insert gif or link to demo
 - Light/dark mode toggle
 - Search View
 - Convenient storage and removal
-
-
-## Installation for Android
-
-Link To Web
 
 
 ## Color Reference
