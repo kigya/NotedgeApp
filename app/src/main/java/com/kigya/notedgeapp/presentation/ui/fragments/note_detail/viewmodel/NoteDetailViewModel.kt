@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+typealias checkIfEmptyAction = () -> Unit
+
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
     private val addNoteUseCase: AddNoteUseCase,
@@ -36,15 +38,27 @@ class NoteDetailViewModel @Inject constructor(
         }
     }
 
-    fun validateNote(note: Note) {
+    private fun checkIfEmpty(note: Note, action1: checkIfEmptyAction, action2: checkIfEmptyAction) {
         if (note.noteText.isBlank()
             && note.title.isBlank()
         ) {
-            deleteNote(note.id)
+            action1.invoke()
         } else {
-            update(note)
+            action2.invoke()
         }
         popBackStack()
+    }
+
+    fun onBackpressedToolbar(note: Note) {
+        checkIfEmpty(note, { deleteNote(note.id) }, {})
+    }
+
+    fun onBackpressed(note: Note) {
+        checkIfEmpty(note, { deleteNote(note.id) }, { update(note) })
+    }
+
+    fun onDonePressed(note: Note) {
+        checkIfEmpty(note, { deleteNote(note.id) }, { update(note) })
     }
 
     private fun update(note: Note) {

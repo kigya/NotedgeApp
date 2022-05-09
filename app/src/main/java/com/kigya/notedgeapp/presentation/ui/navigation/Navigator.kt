@@ -1,5 +1,6 @@
 package com.kigya.notedgeapp.presentation.ui.navigation
 
+import androidx.activity.OnBackPressedCallback
 import com.kigya.notedgeapp.data.model.Note
 
 interface Navigator {
@@ -17,5 +18,7 @@ interface Navigator {
         addToBackStack: Boolean = true,
         clearBackstack: Boolean = false
     )
+
+    fun addOnBackpressedCallBack(callback: OnBackPressedCallback)
 
 }

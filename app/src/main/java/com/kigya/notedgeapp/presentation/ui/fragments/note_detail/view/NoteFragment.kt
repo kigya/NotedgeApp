@@ -5,6 +5,7 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,6 +17,7 @@ import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.EventsNotifica
 import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.viewmodel.NoteDetailViewModel
 import com.kigya.notedgeapp.utils.constants.Constants.ARG_NOTE
 import com.kigya.notedgeapp.utils.constants.Constants.NOTE_DATE_FORMAT
+import com.kigya.notedgeapp.utils.extensions.navigator
 import com.kigya.notedgeapp.utils.extensions.notifier
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,6 +52,8 @@ class NoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycle.addObserver(noteDetailViewModel)
+
         initializeNote()
         initializeListeners()
         initializeObservers()
@@ -65,12 +69,17 @@ class NoteFragment : Fragment() {
     }
 
     private fun initializeListeners() {
+        navigator().addOnBackpressedCallBack(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                noteDetailViewModel.onBackpressed(note)
+            }
+        })
         binding.imgDone.setOnClickListener {
-            noteDetailViewModel.validateNote(note)
+            noteDetailViewModel.onDonePressed(note)
         }
 
         binding.imgBack.setOnClickListener {
-            noteDetailViewModel.validateNote(note)
+            noteDetailViewModel.onBackpressedToolbar(note)
         }
     }
 

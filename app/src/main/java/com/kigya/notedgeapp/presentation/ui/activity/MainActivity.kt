@@ -3,6 +3,7 @@ package com.kigya.notedgeapp.presentation.ui.activity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -130,6 +131,10 @@ class MainActivity : AppCompatActivity(), Navigator, Notifier {
             clearBackstack = clearBackstack,
             addToBackStack = addToBackStack
         )
+    }
+
+    override fun addOnBackpressedCallBack(callback: OnBackPressedCallback){
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun showSnackbar(@StringRes message: Int, notifierCallback: NotifierCallback?) {
