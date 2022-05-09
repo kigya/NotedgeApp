@@ -2,7 +2,6 @@ package com.kigya.notedgeapp.presentation.ui.fragments.note_detail.view
 
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +61,6 @@ class NoteFragment : Fragment() {
         }
         binding.noteDescription.doOnTextChanged { s, _, _, _ ->
             note.noteText = s.toString()
-            Log.d(TAG, s.toString())
         }
     }
 
@@ -119,7 +117,6 @@ class NoteFragment : Fragment() {
         fun newInstance(note: Note) = NoteFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(ARG_NOTE, note)
-                Log.d(TAG, "newInstance $note")
             }
         }
 
