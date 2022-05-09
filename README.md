@@ -11,11 +11,12 @@
   <p align="center">
     Note-taking Android app
     <br />
-    <a href="https://notedge.netlify.app/"><strong>Download »</strong></a>
+    <a href="https://notedge.netlify.app/"><strong>Website »</strong></a>
+    <br />
+    <a href="https://github.com/kigya/NotedgeApp/releases/download/notes/Notedge_v0.1_09.05.2022.apk"><strong>Download »</strong></a>
     <br />
   </p>
 </div>
-
 
 ## Tech Stack
 
