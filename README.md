@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <a href='https://svgshare.com/s/gwU' ><img src='https://svgshare.com/i/gwU.svg' title='' width="100" heigth-"100"/></a>
+    <a href='https://github.com/kigya/NotedgeApp' ><img src='https://svgshare.com/i/gwU.svg' title='' width="100" heigth-"100"/></a>
   </a>
 
   <h3 align="center">NOTEDGE</h3>
