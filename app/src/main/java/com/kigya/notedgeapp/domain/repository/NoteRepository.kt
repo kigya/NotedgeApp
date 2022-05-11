@@ -8,9 +8,9 @@ import java.util.*
 interface NoteRepository {
 
     fun getNotes(): Flow<List<Note>>
-    suspend fun getNote(id: UUID): Note?
+    suspend fun getNote(id: Long): Note?
     suspend fun addNote(note: Note)
-    suspend fun deleteNote(id: UUID)
+    suspend fun deleteNote(id: Long)
     suspend fun updateNote(note: Note)
     fun search(request: String?): Flow<List<Note>>
 

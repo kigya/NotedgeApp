@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-class NoteTouchHelper(private val itemTouchHelperAdapter: ItemTouchHelperAdapter) :
+class NoteTouchHelper(private val adapter: ItemTouchHelperAdapter) :
     ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(
@@ -29,14 +29,10 @@ class NoteTouchHelper(private val itemTouchHelperAdapter: ItemTouchHelperAdapter
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        val adapter = recyclerView.adapter as NotesRecyclerAdapter
-
         val from = viewHolder.bindingAdapterPosition
-
         val to = target.bindingAdapterPosition
 
-        adapter.notifyItemMoved(from, to)
-
+        adapter.onItemMoved(from, to)
         return true
     }
 

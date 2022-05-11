@@ -63,7 +63,7 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/drag_icon"
                     android:padding="0dp"
-                    android:src="@drawable/ic_more_36"
+                    android:src="@drawable/ic_drag_indicator_32"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/note_item_title"

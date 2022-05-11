@@ -1,5 +1,6 @@
 package com.kigya.notedgeapp.presentation.ui.fragments.note_list.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.kigya.notedgeapp.data.model.Event
 import com.kigya.notedgeapp.data.model.MutableLiveEvent
@@ -35,7 +36,7 @@ class NotesListViewModel @Inject constructor(
         return searchUseCase(request).asLiveData()
     }
 
-    override fun onNoteDelete(id: UUID) {
+    override fun onNoteDelete(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteNoteUseCase(id)
         }
@@ -44,6 +45,10 @@ class NotesListViewModel @Inject constructor(
 
     override fun onNoteSelected(note: Note) {
         _onItemSelected.value = Event(note)
+    }
+
+    override fun onItemMoved(from: Long, to: Long) {
+        Log.d(TAG, "position changed")
     }
 
 

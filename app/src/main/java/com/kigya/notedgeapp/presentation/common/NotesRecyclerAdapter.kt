@@ -4,11 +4,9 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.text.format.DateFormat
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +18,9 @@ import com.kigya.notedgeapp.utils.extensions.findIndexById
 import java.util.*
 
 interface NoteActionListener {
-    fun onNoteDelete(id: UUID)
+    fun onNoteDelete(id: Long)
     fun onNoteSelected(note: Note)
+    fun onItemMoved(from: Long, to: Long)
 }
 
 class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
@@ -35,7 +34,7 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
             diffUtilResult.dispatchUpdatesTo(this)
         }
 
-    private var _removing: UUID? = null
+    private var _removing: Long? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -77,8 +76,9 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
                 onRootLongClick(it)
                 return@setOnLongClickListener true
             }
-            binding.dragItem.setOnClickListener {
+            binding.dragItem.setOnTouchListener { _, event ->
 
+                return@setOnTouchListener true
             }
 
         }
@@ -134,15 +134,18 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
 
     }
 
-    companion object {
-        const val ID_REMOVE = 1
+    override fun onItemMoved(from: Int, to: Int) = swapItems(from, to)
 
-        @JvmStatic
-        private val TAG = "NoteRecyclerAdapter"
+    //todo
+    private fun swapItems(positionFrom: Int, positionTo: Int) {
+        Collections.swap(notes, positionFrom, positionTo)
+        notifyItemMoved(positionFrom, positionTo)
+        actionListener.onItemMoved(positionFrom.toLong(), positionTo.toLong())
     }
 
-    override fun onMoveItem(from: Int, to: Int) {
-
+    companion object {
+        @JvmStatic
+        private val TAG = "NoteRecyclerAdapter"
     }
 
 }

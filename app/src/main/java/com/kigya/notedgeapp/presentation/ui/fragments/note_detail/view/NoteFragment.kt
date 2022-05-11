@@ -29,10 +29,10 @@ class NoteFragment : Fragment() {
 
     private val noteDetailViewModel by viewModels<NoteDetailViewModel>()
 
-    private var note = Note()
+    private var note = Note(id = 0)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        note = arguments?.getParcelable(ARG_NOTE) ?: Note()
+        note = arguments?.getParcelable(ARG_NOTE) ?: Note(id = 0)
         noteDetailViewModel.loadNote(note)
     }
 

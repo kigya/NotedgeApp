@@ -14,13 +14,13 @@ class NoteRepositoryImpl @Inject constructor(
 
     override  fun getNotes(): Flow<List<Note>> = noteDao.getNotes()
 
-    override suspend fun getNote(id: UUID): Note? = noteDao.getNote(id)
+    override suspend fun getNote(id: Long): Note? = noteDao.getNote(id)
 
     override suspend fun addNote(note: Note) {
         noteDao.addNote(note)
     }
 
-    override suspend fun deleteNote(id: UUID) {
+    override suspend fun deleteNote(id: Long) {
         noteDao.deleteSpecificNote(id)
     }
 

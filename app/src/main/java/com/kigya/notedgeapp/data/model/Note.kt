@@ -10,8 +10,7 @@ import java.util.*
 @Entity(tableName = "notes")
 @Parcelize
 data class Note(
-    @PrimaryKey
-    var id: UUID = UUID.randomUUID(),
+    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo(name = "title")
     var title: String = "",
     @ColumnInfo(name = "date_time")

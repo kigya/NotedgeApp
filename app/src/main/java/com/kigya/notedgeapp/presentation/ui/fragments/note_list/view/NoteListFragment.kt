@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.transition.MaterialFadeThrough
 import com.kigya.notedgeapp.R
 import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.model.observeEvent
 import com.kigya.notedgeapp.databinding.FragmentHomeBinding
+import com.kigya.notedgeapp.presentation.common.NoteTouchHelper
 import com.kigya.notedgeapp.presentation.common.NotesRecyclerAdapter
 import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.EventsNotificationContract
 import com.kigya.notedgeapp.presentation.ui.fragments.note_list.viewmodel.NotesListViewModel
@@ -43,8 +45,13 @@ class NoteListFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         adapter = NotesRecyclerAdapter(noteListViewModel)
-        binding.recyclerView.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        val callback = NoteTouchHelper(adapter)
+        val touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(binding.recyclerView)
+
         binding.recyclerView.adapter = adapter
 
         return view
@@ -84,7 +91,7 @@ class NoteListFragment : Fragment() {
             }
         }
         binding.createNoteButton.setOnClickListener {
-            navigator().onNoteSelected(Note())
+            navigator().onNoteSelected(Note(id = 0))
         }
     }
 

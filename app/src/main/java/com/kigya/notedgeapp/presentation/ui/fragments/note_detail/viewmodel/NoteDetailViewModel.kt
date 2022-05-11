@@ -11,7 +11,6 @@ import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.EventsNotifica
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 typealias checkIfEmptyAction = () -> Unit
@@ -72,7 +71,7 @@ class NoteDetailViewModel @Inject constructor(
         _popBackstack.postValue(Event(Unit))
     }
 
-    private fun deleteNote(id: UUID) {
+    private fun deleteNote(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteNoteUseCase(id)
         }
