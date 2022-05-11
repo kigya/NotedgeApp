@@ -4,11 +4,11 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.text.format.DateFormat
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.TextView
-import androidx.cardview.widget.CardView
+import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +25,7 @@ interface NoteActionListener {
 }
 
 class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
-    RecyclerView.Adapter<NotesRecyclerAdapter.NoteHolder>() {
+    RecyclerView.Adapter<NotesRecyclerAdapter.NoteHolder>(), ItemTouchHelperAdapter {
 
     var notes: MutableList<Note> = mutableListOf()
         set(newValue) {
@@ -41,7 +41,7 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
         parent: ViewGroup,
         viewType: Int
     ): NotesRecyclerAdapter.NoteHolder {
-        val binding: NoteItemBinding =
+        val binding =
             NoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return NoteHolder(binding)
@@ -50,55 +50,58 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
     override fun getItemCount() = notes.size
 
     override fun onBindViewHolder(holder: NotesRecyclerAdapter.NoteHolder, position: Int) {
-        holder.itemView.animation =
-            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.main)
         val note = notes[position]
+
+        holder.itemView.animation = AnimationUtils
+            .loadAnimation(holder.itemView.context, R.anim.main)
+
         holder.bind(note)
     }
 
-    inner class NoteHolder(binding: NoteItemBinding) : RecyclerView.ViewHolder(binding.root),
-        View.OnClickListener, View.OnLongClickListener {
+    inner class NoteHolder(private val binding: NoteItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         lateinit var note: Note
 
-        private val noteTitleTextView: TextView = itemView.findViewById(R.id.note_item_title)
-        private val noteDescriptionTextView: TextView =
-            itemView.findViewById(R.id.note_item_description)
-        private val noteDateTextView: TextView = itemView.findViewById(R.id.note_item_datetime)
-
-        init {
-            itemView.setOnClickListener(this)
-            itemView.setOnLongClickListener(this)
-        }
-
         fun bind(note: Note) {
             this.note = note
-            noteTitleTextView.text = this.note.title.trim()
-            noteDescriptionTextView.text = this.note.noteText.trim()
-            noteDateTextView.text =
-                DateFormat.format(LIST_DATE_FORMAT, this.note.dateTime)
+            binding.dragItem.tag = note
+            binding.noteItemTitle.text = this.note.title.trim()
+            binding.noteItemDescription.text = this.note.noteText.trim()
+            binding.noteItemDatetime.text = DateFormat.format(LIST_DATE_FORMAT, this.note.dateTime)
+
+            binding.root.setOnClickListener {
+                onRootClick(it)
+            }
+            binding.root.setOnLongClickListener {
+                onRootLongClick(it)
+                return@setOnLongClickListener true
+            }
+            binding.dragItem.setOnClickListener {
+
+            }
+
         }
 
         private fun enableCardViewColor(v: View) {
-            itemView.findViewById<CardView>(R.id.cardView).setCardBackgroundColor(
+            binding.cardView.setCardBackgroundColor(
                 ContextCompat.getColor(v.context!!, R.color.viridian_green)
             )
         }
 
-        override fun onClick(v: View) {
+        private fun onRootClick(view: View?) {
             if (_removing == null || note.id != _removing) {
                 actionListener.onNoteSelected(note)
             }
         }
 
-        override fun onLongClick(view: View?): Boolean {
+        private fun onRootLongClick(view: View?) {
             view?.let {
                 enableCardViewColor(it)
             }
             val animator = animateViewAlpha(view)
             addAnimatorListener(animator)
             animator?.start()
-            return true
         }
 
         private fun addAnimatorListener(animator: ValueAnimator?) {
@@ -121,12 +124,25 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
 
         private fun animateViewAlpha(view: View?): ValueAnimator? {
             val animator = ValueAnimator.ofFloat(0f, 1f)
-            animator.duration = 250
+            animator.duration = 210
             animator.addUpdateListener { valueAnimator ->
                 val animatedValue = valueAnimator.animatedValue as Float
                 view?.alpha = animatedValue
             }
             return animator
         }
+
     }
+
+    companion object {
+        const val ID_REMOVE = 1
+
+        @JvmStatic
+        private val TAG = "NoteRecyclerAdapter"
+    }
+
+    override fun onMoveItem(from: Int, to: Int) {
+
+    }
+
 }

@@ -26,4 +26,9 @@
     <string name="loading">Loading…</string>
     <string name="note_saved">Note saved successfully</string>
     <string name="removed">Note removed</string>
+    <string name="date">09.05.2022</string>
+    <string name="content">Content</string>
+    <string name="drag_icon">Drag icon</string>
+    <string name="remove_menu_item">Remove note</string>
+
 </resources>
