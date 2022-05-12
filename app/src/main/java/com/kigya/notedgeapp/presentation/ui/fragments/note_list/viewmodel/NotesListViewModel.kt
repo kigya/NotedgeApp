@@ -6,6 +6,7 @@ import com.kigya.notedgeapp.data.model.Event
 import com.kigya.notedgeapp.data.model.MutableLiveEvent
 import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.data.model.share
+import com.kigya.notedgeapp.domain.usecase.ChangeNotePositionUseCase
 import com.kigya.notedgeapp.domain.usecase.DeleteNoteUseCase
 import com.kigya.notedgeapp.domain.usecase.GetNotesUseCase
 import com.kigya.notedgeapp.domain.usecase.SearchUseCase
@@ -14,7 +15,6 @@ import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.EventsNotifica
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +22,7 @@ class NotesListViewModel @Inject constructor(
     private val getNotesUseCase: GetNotesUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase,
     private val searchUseCase: SearchUseCase,
+    private val changeNotePositionUseCase: ChangeNotePositionUseCase
 ) : ViewModel(), NoteActionListener, LifecycleEventObserver {
 
     private val _onItemSelected = MutableLiveEvent<Note>()
@@ -30,9 +31,9 @@ class NotesListViewModel @Inject constructor(
     private val _notificationLD = MutableLiveEvent<EventsNotificationContract>()
     val notificationLD = _notificationLD.share()
 
-    fun noteListLiveData() : LiveData<List<Note>> = getNotesUseCase().asLiveData()
+    fun noteListLiveData(): LiveData<List<Note>> = getNotesUseCase().asLiveData()
 
-    fun search(request: String?): LiveData<List<Note>>{
+    fun search(request: String?): LiveData<List<Note>> {
         return searchUseCase(request).asLiveData()
     }
 
@@ -48,9 +49,11 @@ class NotesListViewModel @Inject constructor(
     }
 
     override fun onItemMoved(from: Long, to: Long) {
-        Log.d(TAG, "position changed")
+        viewModelScope.launch(Dispatchers.IO) {
+            changeNotePositionUseCase(from, to)
+        }
+        Log.d(TAG, "from: $from, to: $to")
     }
-
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
@@ -61,7 +64,7 @@ class NotesListViewModel @Inject constructor(
         }
     }
 
-    companion object{
+    companion object {
         @JvmStatic
         private val TAG = "NoteListVM"
     }

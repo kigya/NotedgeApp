@@ -26,11 +26,26 @@ class NoteRepositoryImpl @Inject constructor(
 
     override suspend fun updateNote(note: Note) {
         noteDao.updateNote(note)
-        Log.d("NoteRepository", "${note.noteText} ${note.title}")
     }
 
     override fun search(request: String?): Flow<List<Note>> {
         return noteDao.searchNotes(request)
+    }
+
+    override suspend fun setTo0(target: Long) {
+        noteDao.setTo0(target)
+    }
+
+    override suspend fun increasePosValue(from: Long, to: Long) {
+        noteDao.increasePosValue(from,to)
+    }
+
+    override suspend fun decreasePosValue(from: Long, to: Long) {
+        noteDao.decreasePosValue(from,to)
+    }
+
+    override suspend fun setWhere0(target: Long) {
+        noteDao.setWhere0(target)
     }
 
 }

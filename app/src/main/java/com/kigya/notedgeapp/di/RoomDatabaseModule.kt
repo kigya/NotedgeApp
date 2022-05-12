@@ -24,7 +24,7 @@ object RoomDatabaseModule {
             application,
             NotesDatabase::class.java,
             Constants.DATABASE_NAME
-        ).build()
+        ).createFromAsset("notes_asset.db").build()
     }
 
     @Provides

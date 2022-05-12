@@ -30,6 +30,12 @@ class NoteFragment : Fragment() {
     private val noteDetailViewModel by viewModels<NoteDetailViewModel>()
 
     private var note = Note(id = 0)
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            noteDetailViewModel.onBackpressed(note)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         note = arguments?.getParcelable(ARG_NOTE) ?: Note(id = 0)
@@ -69,11 +75,8 @@ class NoteFragment : Fragment() {
     }
 
     private fun initializeListeners() {
-        navigator().addOnBackpressedCallBack(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                noteDetailViewModel.onBackpressed(note)
-            }
-        })
+        navigator().addOnBackpressedCallBack(onBackPressedCallback)
+
         binding.imgDone.setOnClickListener {
             noteDetailViewModel.onDonePressed(note)
         }
@@ -109,6 +112,7 @@ class NoteFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        onBackPressedCallback.remove()
     }
 
     private fun updateUI() {

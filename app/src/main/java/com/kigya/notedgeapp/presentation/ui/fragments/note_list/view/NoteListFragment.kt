@@ -1,6 +1,7 @@
 package com.kigya.notedgeapp.presentation.ui.fragments.note_list.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.transition.MaterialFadeThrough
 import com.kigya.notedgeapp.R
@@ -32,6 +34,8 @@ class NoteListFragment : Fragment() {
 
     private val noteListViewModel by viewModels<NotesListViewModel>()
 
+    private var noteSize: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentTransitions()
@@ -44,9 +48,12 @@ class NoteListFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
-        adapter = NotesRecyclerAdapter(noteListViewModel)
+        adapter = NotesRecyclerAdapter(noteListViewModel).apply {
+            stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
 
-        binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         val callback = NoteTouchHelper(adapter)
         val touchHelper = ItemTouchHelper(callback)
@@ -61,7 +68,6 @@ class NoteListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycle.addObserver(noteListViewModel)
-
 
         initializeListeners()
         initializeObservers()
@@ -91,14 +97,16 @@ class NoteListFragment : Fragment() {
             }
         }
         binding.createNoteButton.setOnClickListener {
-            navigator().onNoteSelected(Note(id = 0))
+            navigator().onNoteSelected(Note(id = 0, position = noteSize + 1))
         }
     }
 
     private fun initializeObservers() {
 
         noteListViewModel.noteListLiveData().observe(viewLifecycleOwner) { notes ->
-            adapter.notes = notes.toMutableList()
+            adapter.notes = sortByPosition(notes)
+            noteSize = notes.size.toLong()
+            Log.d(TAG, "noteObserver notesSize: $noteSize")
         }
         noteListViewModel.onItemSelected.observeEvent(viewLifecycleOwner) { note ->
             navigator().onNoteSelected(note)
@@ -119,9 +127,7 @@ class NoteListFragment : Fragment() {
     private fun search(request: String) {
         val query = "%$request%"
         noteListViewModel.search(query).observe(viewLifecycleOwner) { list ->
-            list.let {
-                adapter.notes = it.toMutableList()
-            }
+            list.let { adapter.notes = sortByPosition(it) }
         }
     }
 
@@ -130,6 +136,10 @@ class NoteListFragment : Fragment() {
         enterTransition = MaterialFadeThrough()
         returnTransition = MaterialFadeThrough()
         reenterTransition = MaterialFadeThrough()
+    }
+
+    private fun sortByPosition(list: List<Note>): MutableList<Note> {
+        return list.sortedBy { note -> note.position }.toMutableList()
     }
 
     override fun onDestroyView() {

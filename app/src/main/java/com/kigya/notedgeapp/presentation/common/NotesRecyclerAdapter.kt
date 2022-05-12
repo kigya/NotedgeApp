@@ -3,6 +3,7 @@ package com.kigya.notedgeapp.presentation.common
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.databinding.NoteItemBinding
 import com.kigya.notedgeapp.utils.constants.Constants.LIST_DATE_FORMAT
 import com.kigya.notedgeapp.utils.extensions.findIndexById
-import java.util.*
+
 
 interface NoteActionListener {
     fun onNoteDelete(id: Long)
@@ -76,10 +77,6 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
                 onRootLongClick(it)
                 return@setOnLongClickListener true
             }
-            binding.dragItem.setOnTouchListener { _, event ->
-
-                return@setOnTouchListener true
-            }
 
         }
 
@@ -111,14 +108,15 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
                 }
 
                 override fun onAnimationEnd(p0: Animator?) {
+                    val pos = notes.findIndexById(note.id)
+                    //notes.remove(note)
                     actionListener.onNoteDelete(note.id)
-                    val item = notes.findIndexById(note.id)
-                    notes.remove(note)
-                    notifyItemRemoved(item)
+                    Log.d(TAG, "note id: ${note.position}, item rec. pos. $pos")
+                    notifyItemRemoved(pos)
                 }
 
-                override fun onAnimationCancel(p0: Animator?) = Unit
-                override fun onAnimationRepeat(p0: Animator?) = Unit
+                override fun onAnimationCancel(p0: Animator?) = run { animator.cancel() }
+                override fun onAnimationRepeat(p0: Animator?) = run { }
             })
         }
 
@@ -134,13 +132,28 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
 
     }
 
-    override fun onItemMoved(from: Int, to: Int) = swapItems(from, to)
+    override fun onItemMoves(from: Int, to: Int) = swapItems(from, to)
 
-    //todo
-    private fun swapItems(positionFrom: Int, positionTo: Int) {
-        Collections.swap(notes, positionFrom, positionTo)
-        notifyItemMoved(positionFrom, positionTo)
-        actionListener.onItemMoved(positionFrom.toLong(), positionTo.toLong())
+    override fun onItemMoved(from: Int, to: Int) = movedActionDone(from, to)
+
+
+    private fun swapItems(from: Int, to: Int) {
+        notifyItemMoved(from,to)
+            /*if (from < to) {
+                for (i in from until to) {
+                    Collections.swap(notes, i, i + 1)
+                }
+            } else {
+                for (i in from downTo to + 1) {
+                    Collections.swap(notes, i, i - 1)
+                }
+            }
+            notifyItemMoved(from, to)*/
+    }
+
+    private fun movedActionDone(from: Int, to: Int) {
+        actionListener.onItemMoved(from.toLong(), to.toLong())
+        Log.d(TAG, "from: $from, to: $to")
     }
 
     companion object {

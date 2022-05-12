@@ -13,5 +13,9 @@ interface NoteRepository {
     suspend fun deleteNote(id: Long)
     suspend fun updateNote(note: Note)
     fun search(request: String?): Flow<List<Note>>
+    suspend fun setTo0(target: Long)
+    suspend fun increasePosValue(from: Long, to: Long)
+    suspend fun decreasePosValue(from: Long, to: Long)
+    suspend fun setWhere0(target: Long)
 
 }

@@ -3,7 +3,6 @@ package com.kigya.notedgeapp.data.local.room.dao
 import androidx.room.*
 import com.kigya.notedgeapp.data.model.Note
 import kotlinx.coroutines.flow.Flow
-import java.util.*
 
 @Dao
 interface NoteDao {
@@ -26,8 +25,17 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE title LIKE :request OR note_text LIKE :request")
     fun searchNotes(request: String?): Flow<List<Note>>
 
-    @Query("UPDATE notes SET id = (SELECT max(id) + 1 FROM notes) WHERE id =:to")
-    suspend fun swapPosition(from: Long, to: Long){
+    @Query("UPDATE notes SET position = 0 WHERE position =:target")
+    suspend fun setTo0(target: Long)
 
-    }
+    @Query("UPDATE notes SET position = position + 1 WHERE position BETWEEN :from AND :to - 1")
+    suspend fun increasePosValue(from: Long, to: Long)
+
+    @Query("UPDATE notes SET position = position - 1 WHERE position BETWEEN :from + 1 AND :to")
+    suspend fun decreasePosValue(from: Long, to: Long)
+
+    @Query("UPDATE notes SET position =:target WHERE position = 0")
+    suspend fun setWhere0(target: Long)
+
+
 }
