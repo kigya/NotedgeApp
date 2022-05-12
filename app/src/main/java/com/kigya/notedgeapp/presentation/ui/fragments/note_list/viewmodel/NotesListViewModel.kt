@@ -52,7 +52,6 @@ class NotesListViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             changeNotePositionUseCase(from, to)
         }
-        Log.d(TAG, "from: $from, to: $to")
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {

@@ -33,6 +33,7 @@ class NoteTouchHelper(private val adapter: ItemTouchHelperAdapter) :
         when (actionState) {
             ACTION_STATE_DRAG -> {
                 this.from = viewHolder?.bindingAdapterPosition ?: 0
+                this.to = viewHolder?.bindingAdapterPosition ?: 0
             }
             ACTION_STATE_IDLE -> {
                 adapter.onItemMoved(from + 1, to + 1)

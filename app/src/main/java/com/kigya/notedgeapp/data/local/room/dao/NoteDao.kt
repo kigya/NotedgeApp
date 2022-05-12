@@ -37,5 +37,4 @@ interface NoteDao {
     @Query("UPDATE notes SET position =:target WHERE position = 0")
     suspend fun setWhere0(target: Long)
 
-
 }
