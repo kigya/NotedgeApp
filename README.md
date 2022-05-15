@@ -36,7 +36,7 @@
 
 ## UML Diagram
 
-<img width="364" alt="image" src="https://user-images.githubusercontent.com/73034324/168480104-f68aa4b6-adf7-4c40-bd6b-92b1e8a92339.png">
+![notedgeapp](https://user-images.githubusercontent.com/73034324/168480134-a2978123-b405-4f94-ab1b-6b77c28f72f1.png)
 
 
 ## Features
