@@ -103,8 +103,8 @@ class MainActivity : AppCompatActivity(), Navigator, Notifier {
     private fun clearBackStack() =
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-    override fun onNoteSelected(note: Note) {
-        openFragment(NoteFragment.newInstance(note))
+    override fun onNoteSelected(note: Note, status: Boolean) {
+        openFragment(NoteFragment.newInstance(note, status))
     }
 
     override fun openNoteList(
