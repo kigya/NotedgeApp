@@ -30,5 +30,7 @@
     <string name="content">Content</string>
     <string name="drag_icon">Drag icon</string>
     <string name="remove_menu_item">Remove note</string>
+    <string name="on_dot">ON DOT</string>
+    <string name="delete">Delete</string>
 
 </resources>
