@@ -34,9 +34,9 @@
 [Preference](https://developer.android.com/jetpack/androidx/releases/preference)
 
 
-## Demo
+## UML Diagram
 
-Insert gif or link to demo
+<img width="364" alt="image" src="https://user-images.githubusercontent.com/73034324/168480104-f68aa4b6-adf7-4c40-bd6b-92b1e8a92339.png">
 
 
 ## Features
