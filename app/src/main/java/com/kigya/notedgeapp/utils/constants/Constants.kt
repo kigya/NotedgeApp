@@ -8,6 +8,7 @@ object Constants {
     const val NOTE_DATE_FORMAT = "dd/M/yyyy hh:mm:ss"
     const val ARG_NOTE_ID = "note_id"
     const val ARG_NOTE = "arg_note"
+    const val ARG_NEW_NOTE_STATUS = "arg_new_note_status"
     const val NOTE = "note"
 
     const val ONBOARDING = "ONBOARDING"
