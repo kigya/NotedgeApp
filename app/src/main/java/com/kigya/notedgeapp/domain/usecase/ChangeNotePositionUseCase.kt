@@ -8,8 +8,6 @@ class ChangeNotePositionUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(from: Long, to: Long) {
         when {
-
-            //fix
             from < to -> {                                      /*UPDATE notes SET position = 0 WHERE position = 1*/
                 repository.setTo0(from)                           /*UPDATE notes SET position = position - 1 WHERE position BETWEEN 2 AND 6*/
                 repository.decreasePosValue(from, to)       /*UPDATE notes SET position = 6 WHERE position = 0*/
