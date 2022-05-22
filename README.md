@@ -43,7 +43,6 @@
 
 - Splash Screen
 - Onboarding first time
-- Light/dark mode toggle
 - Search View
 - Convenient storage and removal
 
