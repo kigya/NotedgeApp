@@ -16,4 +16,6 @@ data class Note(
     @ColumnInfo(name = "date_time") var dateTime: Date = Date(),
     @ColumnInfo(name = "note_text") var noteText: String = "",
     @ColumnInfo(name = "position") var position: Long = id,
-) : Parcelable
+) : Parcelable{
+    var isSelected: Boolean = false
+}

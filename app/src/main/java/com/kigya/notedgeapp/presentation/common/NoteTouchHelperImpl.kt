@@ -1,6 +1,5 @@
 package com.kigya.notedgeapp.presentation.common
 
-import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
@@ -16,20 +15,26 @@ class NoteTouchHelper(private val adapter: ItemTouchHelperAdapter) :
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
-        val dragFlag = if (recyclerView.layoutManager is StaggeredGridLayoutManager) {
-            UP or DOWN or LEFT or RIGHT
+        return if (recyclerView.layoutManager is StaggeredGridLayoutManager) {
+            val dragFlag = UP or DOWN or LEFT or RIGHT
+            val swipeFlag = 0
+            makeMovementFlags(dragFlag, swipeFlag)
         } else {
-            UP or DOWN or START or END
+            val dragFlag = UP or DOWN or START or END
+            val swipeFlag = if (viewHolder.bindingAdapterPosition % 2 == 0) LEFT else RIGHT
+            makeMovementFlags(dragFlag, swipeFlag)
         }
-        return makeMovementFlags(dragFlag, 0)
     }
 
     override fun isLongPressDragEnabled(): Boolean {
         return true
     }
 
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return true
+    }
+
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-        super.onSelectedChanged(viewHolder, actionState)
         when (actionState) {
             ACTION_STATE_DRAG -> {
                 this.from = viewHolder?.bindingAdapterPosition ?: 0
@@ -39,6 +44,7 @@ class NoteTouchHelper(private val adapter: ItemTouchHelperAdapter) :
                 adapter.onItemMoved(from + 1, to + 1)
             }
         }
+        super.onSelectedChanged(viewHolder, actionState)
     }
 
     override fun onMove(
@@ -46,13 +52,16 @@ class NoteTouchHelper(private val adapter: ItemTouchHelperAdapter) :
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        this.to = target.bindingAdapterPosition
-        Log.d("helpI", "$to")
+        if (viewHolder.itemViewType != target.itemViewType) return false
+
+        to = target.bindingAdapterPosition
         adapter.onItemMoves(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
+
         return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        adapter.onItemRemoved(viewHolder.bindingAdapterPosition)
     }
 
 }

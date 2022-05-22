@@ -25,6 +25,8 @@ class NoteDetailViewModel @Inject constructor(
     private val _noteLiveData = savedStateHandle.getLiveData<Note>(SSH_NOTE)
     val noteLiveData = _noteLiveData.share()
 
+    private val _newNote = savedStateHandle.getLiveData<Boolean>(NEW_NOTE)
+
     private val _notificationLD = MutableLiveEvent<EventsNotificationContract>()
     val notificationLD = _notificationLD.share()
 
@@ -37,27 +39,32 @@ class NoteDetailViewModel @Inject constructor(
         }
     }
 
-    private fun checkIfEmpty(note: Note, action1: checkIfEmptyAction, action2: checkIfEmptyAction) {
-        if (note.noteText.isBlank()
-            && note.title.isBlank()
-        ) {
-            action1.invoke()
-        } else {
-            action2.invoke()
+    private fun checkIfEmpty(note: Note, delete: checkIfEmptyAction, update: checkIfEmptyAction = {}) {
+        when {
+            note.noteText.isBlank() && note.title.isBlank() -> {
+                delete.invoke()
+            }
+            else -> {
+                update.invoke()
+            }
         }
         popBackStack()
     }
 
     fun onBackpressedToolbar(note: Note) {
-        checkIfEmpty(note, { deleteNote(note.id) }, {})
+        checkIfEmpty(note, delete = { deleteNote(note.id) })
     }
 
     fun onBackpressed(note: Note) {
-        checkIfEmpty(note, { deleteNote(note.id) }, { update(note) })
+        checkIfEmpty(note, delete = { deleteNote(note.id) }, update = { update(note) })
     }
 
     fun onDonePressed(note: Note) {
-        checkIfEmpty(note, { deleteNote(note.id) }, { update(note) })
+        checkIfEmpty(note, delete = { deleteNote(note.id) }, update = { update(note) })
+    }
+
+    fun noteStatus(status: Boolean) {
+        _newNote.value = status
     }
 
     private fun update(note: Note) {
@@ -75,7 +82,27 @@ class NoteDetailViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             deleteNoteUseCase(id)
         }
-        _notificationLD.postValue(Event(EventsNotificationContract.DELETED))
+        if (_newNote.value != true) {
+            _notificationLD.postValue(Event(EventsNotificationContract.DELETED))
+        }
+    }
+
+    private fun ssh() {
+        if (!savedStateHandle.contains(SSH_NOTE)) {
+            savedStateHandle.set(SSH_NOTE, noteLiveData.value)
+        }
+        if (!savedStateHandle.contains(NEW_NOTE)) {
+            savedStateHandle.set(NEW_NOTE, _newNote.value)
+        }
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_DESTROY -> {
+                ssh()
+            }
+            else -> {}
+        }
     }
 
     companion object {
@@ -84,17 +111,9 @@ class NoteDetailViewModel @Inject constructor(
 
         @JvmStatic
         private val SSH_NOTE = "SSH_NOTE"
-    }
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        when (event) {
-            Lifecycle.Event.ON_DESTROY -> {
-                if (!savedStateHandle.contains(SSH_NOTE)) {
-                    savedStateHandle.set(SSH_NOTE, noteLiveData.value)
-                }
-            }
-            else -> {}
-        }
+        @JvmStatic
+        private val NEW_NOTE = "NEW_NOTE"
     }
 
 }

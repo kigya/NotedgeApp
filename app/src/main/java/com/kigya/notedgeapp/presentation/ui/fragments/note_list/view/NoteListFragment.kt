@@ -48,6 +48,8 @@ class NoteListFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
+        //(activity as MainActivity).setSupportActionBar(binding.toolbar)
+
         adapter = NotesRecyclerAdapter(noteListViewModel).apply {
             stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
@@ -71,6 +73,7 @@ class NoteListFragment : Fragment() {
 
         initializeListeners()
         initializeObservers()
+        noteListViewModel.getNotes()
     }
 
     private fun initializeListeners() {
@@ -90,28 +93,26 @@ class NoteListFragment : Fragment() {
 
             return@setOnCloseListener true
         }
-        binding.root.setOnClickListener {
-            with(binding.searchView) {
-                setQuery("", false)
-                clearFocus()
+        binding.recyclerView.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.searchView.setQuery("", false)
+                binding.searchView.clearFocus()
             }
         }
         binding.createNoteButton.setOnClickListener {
-            navigator().onNoteSelected(Note(id = 0, position = noteSize + 1))
+            noteSize = adapter.notes.size.toLong()
+            Log.d(TAG, "noteObserver notesSize: $noteSize")
+            navigator().onNoteSelected(Note(id = 0, position = noteSize + 1), status = true)
         }
     }
 
     private fun initializeObservers() {
-
-        noteListViewModel.noteListLiveData().observe(viewLifecycleOwner) { notes ->
+        noteListViewModel.noteListLd.observe(viewLifecycleOwner) { notes ->
             adapter.notes = sortByPosition(notes)
-            noteSize = notes.size.toLong()
-            Log.d(TAG, "noteObserver notesSize: $noteSize")
         }
         noteListViewModel.onItemSelected.observeEvent(viewLifecycleOwner) { note ->
             navigator().onNoteSelected(note)
         }
-
         noteListViewModel.notificationLD.observeEvent(viewLifecycleOwner) { event ->
             when (event) {
                 EventsNotificationContract.SAVED -> {
@@ -122,6 +123,7 @@ class NoteListFragment : Fragment() {
                 }
             }
         }
+
     }
 
     private fun search(request: String) {

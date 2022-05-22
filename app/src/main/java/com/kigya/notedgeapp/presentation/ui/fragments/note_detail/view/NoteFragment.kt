@@ -15,6 +15,7 @@ import com.kigya.notedgeapp.data.model.observeEvent
 import com.kigya.notedgeapp.databinding.FragmentCreateNoteBinding
 import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.EventsNotificationContract
 import com.kigya.notedgeapp.presentation.ui.fragments.note_detail.viewmodel.NoteDetailViewModel
+import com.kigya.notedgeapp.utils.constants.Constants.ARG_NEW_NOTE_STATUS
 import com.kigya.notedgeapp.utils.constants.Constants.ARG_NOTE
 import com.kigya.notedgeapp.utils.constants.Constants.NOTE_DATE_FORMAT
 import com.kigya.notedgeapp.utils.extensions.navigator
@@ -30,6 +31,8 @@ class NoteFragment : Fragment() {
     private val noteDetailViewModel by viewModels<NoteDetailViewModel>()
 
     private var note = Note(id = 0)
+    private var status = false
+
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             noteDetailViewModel.onBackpressed(note)
@@ -39,7 +42,9 @@ class NoteFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         note = arguments?.getParcelable(ARG_NOTE) ?: Note(id = 0)
+        status = arguments?.getBoolean(ARG_NEW_NOTE_STATUS) ?: false
         noteDetailViewModel.loadNote(note)
+        noteDetailViewModel.noteStatus(status)
     }
 
     override fun onCreateView(
@@ -127,9 +132,10 @@ class NoteFragment : Fragment() {
         private val TAG = "NoteFragment"
 
         @JvmStatic
-        fun newInstance(note: Note) = NoteFragment().apply {
+        fun newInstance(note: Note, status: Boolean = false) = NoteFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(ARG_NOTE, note)
+                putBoolean(ARG_NEW_NOTE_STATUS, status)
             }
         }
 

@@ -7,6 +7,17 @@
     android:background="@color/ebony_clay"
     tools:context=".presentation.ui.activity.MainActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:title="@string/notes"
+        app:titleTextColor="@color/alice_blue"
+        android:background="@color/ebony_clay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/app_title"
         android:layout_width="match_parent"
@@ -16,6 +27,7 @@
         android:paddingStart="@dimen/_14sdp"
         android:paddingTop="@dimen/_14sdp"
         android:paddingEnd="@dimen/_14sdp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,6 +48,16 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/delete_ib"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/delete_note_button"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
     </LinearLayout>
 
     <SearchView
@@ -54,7 +76,7 @@
         android:theme="@style/ThemeOverlay.search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_title" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

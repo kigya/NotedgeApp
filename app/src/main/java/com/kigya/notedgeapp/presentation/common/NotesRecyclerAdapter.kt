@@ -1,12 +1,9 @@
 package com.kigya.notedgeapp.presentation.common
 
-import android.animation.Animator
 import android.animation.ValueAnimator
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -16,6 +13,7 @@ import com.kigya.notedgeapp.data.model.Note
 import com.kigya.notedgeapp.databinding.NoteItemBinding
 import com.kigya.notedgeapp.utils.constants.Constants.LIST_DATE_FORMAT
 import com.kigya.notedgeapp.utils.extensions.findIndexById
+import java.util.*
 
 
 interface NoteActionListener {
@@ -34,15 +32,15 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
             field = newValue
             diffUtilResult.dispatchUpdatesTo(this)
         }
-
+    private var _selectedPosition = arrayListOf<Int>()
     private var _removing: Long? = null
+    private var actionMode: ActionMode? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): NotesRecyclerAdapter.NoteHolder {
-        val binding =
-            NoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = NoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return NoteHolder(binding)
     }
@@ -52,11 +50,12 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
     override fun onBindViewHolder(holder: NotesRecyclerAdapter.NoteHolder, position: Int) {
         val note = notes[position]
 
-        holder.itemView.animation = AnimationUtils
-            .loadAnimation(holder.itemView.context, R.anim.main)
+        holder.itemView.animation =
+            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.main)
 
         holder.bind(note)
     }
+
 
     inner class NoteHolder(private val binding: NoteItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -65,17 +64,61 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
 
         fun bind(note: Note) {
             this.note = note
-            binding.dragItem.tag = note
             binding.noteItemTitle.text = this.note.title.trim()
             binding.noteItemDescription.text = this.note.noteText.trim()
             binding.noteItemDatetime.text = DateFormat.format(LIST_DATE_FORMAT, this.note.dateTime)
 
-            binding.root.setOnClickListener {
-                onRootClick(it)
+            binding.root.setOnClickListener { rootView ->
+                when (actionMode) {
+                    null -> {
+                        onRootClick(rootView)
+                        Log.i(this.javaClass.simpleName, "onBindView holderClick")
+                    }
+                    else -> {
+                        rootView.apply {
+                            onItemSelected(this@NoteHolder.bindingAdapterPosition)
+                        }
+
+                    }
+                }
             }
-            binding.root.setOnLongClickListener {
-                onRootLongClick(it)
+
+            binding.root.setOnLongClickListener { rootView ->
+                rootView.startActionMode(actionModelCallback(rootView))
+
                 return@setOnLongClickListener true
+            }
+
+        }
+
+        private fun actionModelCallback(view: View) = object : ActionMode.Callback {
+
+            override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+                val inflater: MenuInflater = mode.menuInflater
+                mode.title = _selectedPosition.size.toString()
+                inflater.inflate(R.menu.note_menu, menu)
+                return true
+            }
+
+            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                return false
+            }
+
+            override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                return when (item.itemId) {
+                    R.id.action_delete -> {
+
+                        onDelete(view)
+                        mode.finish() // Action picked, so close the CAB
+
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            override fun onDestroyActionMode(mode: ActionMode?) {
+                destroyActionMode()
             }
 
         }
@@ -92,32 +135,48 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
             }
         }
 
-        private fun onRootLongClick(view: View?) {
-            view?.let {
-                enableCardViewColor(it)
-            }
+        private fun onDelete(view: View) {
+            enableCardViewColor(view)
+
             val animator = animateViewAlpha(view)
-            addAnimatorListener(animator)
+
+            val pos = notes.findIndexById(note.id)
+            _removing = note.id
+
+            notes.remove(note)
+            actionListener.onNoteDelete(note.id)
+
+            notifyItemRemoved(pos)
+
             animator?.start()
         }
 
-        private fun addAnimatorListener(animator: ValueAnimator?) {
-            animator?.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(p0: Animator?) {
-                    _removing = note.id
-                }
+        private fun onItemSelected(position: Int) {
+            notes[position].isSelected = !notes[position].isSelected
 
-                override fun onAnimationEnd(p0: Animator?) {
-                    val pos = notes.findIndexById(note.id)
-                    //notes.remove(note)
-                    actionListener.onNoteDelete(note.id)
-                    Log.d(TAG, "note id: ${note.position}, item rec. pos. $pos")
-                    notifyItemRemoved(pos)
-                }
+            if (notes[position].isSelected) {
+                _selectedPosition.add(position)
+            } else {
+                _selectedPosition.remove(position)
+            }
+            actionMode!!.title = _selectedPosition.size.toString()
+            Log.i("selectedList", "$_selectedPosition")
 
-                override fun onAnimationCancel(p0: Animator?) = run { animator.cancel() }
-                override fun onAnimationRepeat(p0: Animator?) = run { }
-            })
+            if (_selectedPosition.size == 0) {
+                actionMode!!.finish()
+            }
+            notifyItemChanged(position)
+        }
+
+        private fun destroyActionMode() {
+            if (_selectedPosition.size > 0) {
+                for (position in _selectedPosition) {
+                    notes[position].isSelected = false
+                    notifyItemChanged(position)
+                }
+                _selectedPosition.clear()
+            }
+            actionMode = null
         }
 
         private fun animateViewAlpha(view: View?): ValueAnimator? {
@@ -136,24 +195,42 @@ class NotesRecyclerAdapter(private val actionListener: NoteActionListener) :
 
     override fun onItemMoved(from: Int, to: Int) = movedActionDone(from, to)
 
+    override fun onItemRemoved(position: Int) = removeNote(position)
 
     private fun swapItems(from: Int, to: Int) {
-        notifyItemMoved(from,to)
-            /*if (from < to) {
-                for (i in from until to) {
-                    Collections.swap(notes, i, i + 1)
-                }
-            } else {
-                for (i in from downTo to + 1) {
-                    Collections.swap(notes, i, i - 1)
-                }
+
+        if (from < to) {
+            for (i in from until to) {
+                Collections.swap(notes, i, i + 1)
             }
-            notifyItemMoved(from, to)*/
+
+            for (x in notes) {
+                Log.d(TAG, "tit: ${x.title} - pos: ${notes.indexOf(x) + 1}")
+            }
+            Log.d(TAG, "\n")
+        } else {
+            for (i in from downTo to + 1) {
+                Collections.swap(notes, i, i - 1)
+            }
+
+            for (x in notes) {
+                Log.d(TAG, "tit: ${x.title} - pos: ${notes.indexOf(x) + 1}")
+            }
+            Log.d(TAG, "\n")
+        }
+
+        notifyItemMoved(from, to)
     }
 
     private fun movedActionDone(from: Int, to: Int) {
         actionListener.onItemMoved(from.toLong(), to.toLong())
         Log.d(TAG, "from: $from, to: $to")
+    }
+
+    private fun removeNote(position: Int) {
+        notifyItemRemoved(position)
+        actionListener.onNoteDelete(notes[position].id)
+        Log.d(TAG, "note id: ${notes[position].position}, item rec. pos. $position")
     }
 
     companion object {

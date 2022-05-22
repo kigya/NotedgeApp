@@ -5,7 +5,7 @@ import com.kigya.notedgeapp.data.model.Note
 
 interface Navigator {
 
-    fun onNoteSelected(note: Note)
+    fun onNoteSelected(note: Note, status: Boolean = false)
 
     fun openNoteList(
         firstTime: Boolean = false,
